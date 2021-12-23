@@ -28,6 +28,10 @@ interface WeatherDao {
     @Query("select lng,lat,cityName from weatherbean")
     suspend fun selectAllCities():List<CityBean>
 
+    @Query("select address from weatherbean")
+    fun selectLocalCity():Flow<List<String>>
+
+
     @Delete
     suspend fun deleteCity(weatherBean: WeatherBean)
 }

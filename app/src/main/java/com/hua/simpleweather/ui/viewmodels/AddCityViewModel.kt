@@ -10,6 +10,7 @@ import com.hua.simpleweather.db.dao.bean.LocalCity
 import com.hua.simpleweather.repository.NetRepository
 import com.hua.simpleweather.repository.PlaceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -26,10 +27,8 @@ class AddCityViewModel @Inject constructor(
     private val netRepository: NetRepository
 ):ViewModel() {
     //添加地址的事件，用于如果已存在并不添加
-//    private val _addEvent = MutableStateFlow<ActionEvent>(ActionEvent.Empty)
-//    val addEvent :StateFlow<ActionEvent> get() = _addEvent
-    private val _addEvent = MutableLiveData<ActionEvent>()
-    val addEvent:LiveData<ActionEvent> get() = _addEvent
+    private val _addEvent = MutableStateFlow<ActionEvent>(ActionEvent.Empty)
+    val addEvent :StateFlow<ActionEvent> get() = _addEvent
 
     var cityList = MutableStateFlow<List<LocalCity>>(
         arrayListOf()
@@ -42,15 +41,14 @@ class AddCityViewModel @Inject constructor(
         }
     }
 
+    val localCity = placeRepository.selectLocalCity()
+
     fun addCity(localCity: LocalCity){
         viewModelScope.launch {
             val primary = localCity.lng + localCity.lat
-            Log.d("TAG", "addCity: $primary")
             if(netRepository.cityExist(primary) == 0){
-                Log.d("TAG", "addCity?: 不存在")
                 netRepository.getWeather(localCity.lng,localCity.lat,localCity.cityName)?.let {
                     netRepository.insertWeather(it)
-                    Log.d("TAG", "addCity: $it")
                     _addEvent.value = ActionEvent.Success
                 }
             }else{

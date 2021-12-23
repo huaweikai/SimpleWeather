@@ -47,12 +47,12 @@ class MainViewModel @Inject constructor(
         inputSteam.use {
             val reader = BufferedReader(it)
             reader.forEachLine { city ->
+                //还是拿经纬度直接当主键，后续有用
                 val data = city.split(",")
-                val code = data[0]
                 val cityName = data[1]
                 val lng = data[2]
                 val lat = data[3]
-                LocalCity(code, cityName, lng, lat).also {
+                LocalCity(cityName, lng, lat).also {
                     viewModelScope.launch(Dispatchers.IO) {
                         placeRepository.insertCity(it)
                     }

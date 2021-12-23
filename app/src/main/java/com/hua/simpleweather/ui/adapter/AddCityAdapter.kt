@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.hua.simpleweather.R
 import com.hua.simpleweather.db.dao.bean.LocalCity
 import com.hua.simpleweather.databinding.ItemAddCityBinding
 
@@ -18,7 +19,7 @@ class AddCityAdapter(
 ):ListAdapter<LocalCity,AddCityAdapter.VHolder>(
     object :DiffUtil.ItemCallback<LocalCity>(){
         override fun areItemsTheSame(oldItem: LocalCity, newItem: LocalCity): Boolean {
-            return oldItem.code == newItem.code
+            return oldItem.address == newItem.address
         }
 
         override fun areContentsTheSame(oldItem: LocalCity, newItem: LocalCity): Boolean {
@@ -26,6 +27,14 @@ class AddCityAdapter(
         }
     }
 ) {
+    private var localList = listOf<String>()
+
+    //当新的地址添加后，更新到这，并更新列表
+    fun updateLocalList(list:List<String>){
+        this.localList = list
+        notifyItemRangeChanged(0,itemCount)
+    }
+
 
     class VHolder(val bind:ItemAddCityBinding):RecyclerView.ViewHolder(bind.root)
 
@@ -37,7 +46,7 @@ class AddCityAdapter(
                 false
             )
         ).apply {
-            itemView.setOnClickListener {
+            bind.addcityAddIv.setOnClickListener {
                 onclick(getItem(adapterPosition))
             }
         }
@@ -47,10 +56,13 @@ class AddCityAdapter(
     override fun onBindViewHolder(holder: VHolder, position: Int) {
         val data = getItem(position)
         holder.bind.apply {
-            addcityPlaceName.text = data.cityName
-            val address = "经度${data.lng} 维度${data.lat}"
-            addcityPlaceAddress.text = address
+            val address = data.cityName
+            addcityName.text = address
+            val lngLat = data.lng + data.lat
+            if(lngLat in localList){
+                addcityAddIv.setImageResource(R.drawable.ic_added)
+                addcityAddIv.isClickable = false
+            }
         }
-
     }
 }

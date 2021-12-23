@@ -10,9 +10,9 @@ import androidx.room.PrimaryKey
  */
 @Entity
 data class LocalCity (
-    @PrimaryKey
-    val code:String,
     val cityName:String,
     val lng:String,
-    val lat:String
+    val lat:String,
+    @PrimaryKey
+    val address:String = lng + lat,
 )

@@ -3,26 +3,23 @@ package com.hua.simpleweather.ui.fragments
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
-import com.hua.simpleweather.ActionEvent
-import com.hua.simpleweather.R
+import com.hua.simpleweather.ActionEvent.*
 import com.hua.simpleweather.base.BaseFragment
 import com.hua.simpleweather.databinding.FragmentAddCityBinding
 import com.hua.simpleweather.ui.adapter.AddCityAdapter
 import com.hua.simpleweather.ui.viewmodels.AddCityViewModel
+import com.hua.simpleweather.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class AddCityFragment : BaseFragment<FragmentAddCityBinding>() {
@@ -62,22 +59,21 @@ class AddCityFragment : BaseFragment<FragmentAddCityBinding>() {
                 adapter.submitList(it)
             }
         }
-        viewModel.addEvent.observe(requireActivity(),{
-            when(it){
-                is ActionEvent.Success-> findNavController().navigate(R.id.homeFragment)
-                is ActionEvent.Error -> Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-                else -> {}
+
+        lifecycleScope.launch {
+            viewModel.localCity.collect {
+                adapter.updateLocalList(it)
             }
-        })
-//        lifecycleScope.launch {
-//            viewModel.addEvent.collect {
-//                //添加天气回调，但是会出现ui卡顿，准备不用这种方法
-//                when(it){
-//                    is ActionEvent.Success-> findNavController().navigate(R.id.homeFragment)
-//                    is ActionEvent.Error -> Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-//                    else -> {}
-//                }
-//            }
-//        }
+        }
+
+        lifecycleScope.launch {
+            viewModel.addEvent.collect {
+                when(it){
+                    is Error-> it.message.toast(requireContext())
+                    is Success -> "添加成功".toast(requireContext())
+                    else->{}
+                }
+            }
+        }
     }
 }
