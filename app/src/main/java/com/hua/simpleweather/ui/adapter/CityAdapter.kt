@@ -32,7 +32,7 @@ class CityAdapter(
     }
 ) {
      var isDeleteTime = false
-     class VHolder(val bind:ItemCityBinding):RecyclerView.ViewHolder(bind.root)
+    class VHolder(val bind:ItemCityBinding):RecyclerView.ViewHolder(bind.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VHolder {
         val holder = VHolder(
@@ -49,12 +49,12 @@ class CityAdapter(
             bind.root.setOnClickListener {
                 onclick(adapterPosition)
             }
-            bind.root.setOnLongClickListener {
-                isDeleteTime = true
-                notifyItemRangeChanged(0,currentList.size)
-                onLongClick()
-                return@setOnLongClickListener true
-            }
+//            bind.root.setOnLongClickListener {
+//                isDeleteTime = true
+//                notifyItemRangeChanged(0,currentList.size)
+//                onLongClick()
+//                return@setOnLongClickListener true
+//            }
         }
         return holder
     }
@@ -71,6 +71,8 @@ class CityAdapter(
             cityWeatherDesc.text = getSky(data.realtime_skyIcon).info
 
             cityDelete.isVisible = isDeleteTime
+
+            root.isLongClickable = isDeleteTime
 
         }
     }

@@ -11,6 +11,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.hua.simpleweather.R
 import com.hua.simpleweather.base.BaseFragment
 import com.hua.simpleweather.databinding.FragmentCityBinding
@@ -69,11 +71,49 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
                 adapter.submitList(it)
             }
         }
+        val helper = ItemTouchHelper(object :ItemTouchHelper.Callback(){
+            override fun getMovementFlags(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
+            ): Int {
+                val dragFlag = ItemTouchHelper.UP or ItemTouchHelper.DOWN or
+                        ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+                return makeMovementFlags(dragFlag,0)
+            }
+
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                val actionData = adapter.currentList[viewHolder.adapterPosition]
+                val targetData = adapter.currentList[target.adapterPosition]
+                viewModel.updateWeather(actionData.copy(id = target.adapterPosition))
+                viewModel.updateWeather(targetData.copy(id = viewHolder.adapterPosition))
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
+            }
+        }
+        )
+        helper.attachToRecyclerView(bind.cityRv)
+
         bind.cityOk.setOnClickListener {
-            //如果删除完毕，再次更新adapter，让删除图标消失,同时让确认图标消失
-            adapter.isDeleteTime = false
-            adapter.notifyItemRangeChanged(0, adapter.itemCount)
-            bind.cityOk.isVisible = false
+            if(adapter.isDeleteTime){
+                adapter.isDeleteTime = false
+                adapter.notifyItemRangeChanged(0,adapter.itemCount)
+                bind.cityOk.setImageResource(R.drawable.ic_more)
+            }else{
+                adapter.isDeleteTime = true
+                adapter.notifyItemRangeChanged(0,adapter.itemCount)
+                bind.cityOk.setImageResource(R.drawable.ic_baseline_check_24)
+            }
+//            //如果删除完毕，再次更新adapter，让删除图标消失,同时让确认图标消失
+//            adapter.isDeleteTime = false
+//            adapter.notifyItemRangeChanged(0, adapter.itemCount)
+//            bind.cityOk.isVisible = false
         }
     }
 

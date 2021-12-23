@@ -1,5 +1,6 @@
 package com.hua.simpleweather.db.dao.bean
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.hua.simpleweather.network.bean.DailyResponse
@@ -20,6 +21,7 @@ data class WeatherBean(
     val daily_skyIcon: List<DailyResponse.Skycon>,
     val life_index:List<String>,
     val cityName:String,
+    val id:Int,
     @PrimaryKey
-    val address :String = lng + lat,
+    val address :String = lng + lat
 )

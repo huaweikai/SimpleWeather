@@ -58,12 +58,16 @@ class NetRepository @Inject constructor(
     }
 
     //添加城市
-    suspend fun insertWeather(weather: Weather) {
+    suspend fun insertWeather(weather: Weather,id:Int) {
         val dailyResponse = weather.dailyresponse
         val realtimeResponse = weather.realtimeresponse
         if (dailyResponse != null && realtimeResponse != null) {
-            dao.insertWeather(WeatherToWeatherBean.change(weather))
+            dao.insertWeather(WeatherToWeatherBean.change(weather,id))
         }
+    }
+
+    suspend fun updateWeather(weatherBean: WeatherBean){
+        dao.insertWeather(weatherBean)
     }
 
     //判断要添加的城市是否存在

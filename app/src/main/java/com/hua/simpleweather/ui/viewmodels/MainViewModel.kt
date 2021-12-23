@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.hua.simpleweather.ActionEvent
+import com.hua.simpleweather.db.dao.WeatherDao
 import com.hua.simpleweather.db.dao.bean.LocalCity
 import com.hua.simpleweather.db.dao.bean.WeatherBean
 import com.hua.simpleweather.network.bean.Weather
@@ -41,6 +42,11 @@ class MainViewModel @Inject constructor(
 
     val roomWeather = netRepository.getAllWeather()
 
+    init{
+        //启动app刷新一次天气
+        reFreshWeather()
+    }
+
     //第一次进入软件进行地址导入
     fun firstAction() {
         val inputSteam = InputStreamReader(getApplication<Application>().assets.open("city.csv"))
@@ -70,9 +76,9 @@ class MainViewModel @Inject constructor(
     fun reFreshWeather(){
         _refreshWeather.value = ActionEvent.Loading
         viewModelScope.launch{
-            placeRepository.selectCities().forEach {
+            placeRepository.selectCities().forEachIndexed {index, it ->
                     netRepository.getWeather(it.lng,it.lat,it.cityName)?.let { weather->
-                        netRepository.insertWeather(weather)
+                        netRepository.insertWeather(weather,index)
                 }
             }
             _refreshWeather.value = ActionEvent.Success
@@ -83,6 +89,12 @@ class MainViewModel @Inject constructor(
     fun deleteWeatherBean(weatherBean: WeatherBean){
         viewModelScope.launch {
             netRepository.deleteCity(weatherBean)
+        }
+    }
+
+    fun updateWeather(weatherBean: WeatherBean){
+        viewModelScope.launch {
+            netRepository.updateWeather(weatherBean)
         }
     }
 }

@@ -18,7 +18,7 @@ interface WeatherDao {
     @Query("select count(*) from weatherbean")
     suspend fun getCityCount():Int
 
-    @Query("select * from weatherbean")
+    @Query("select * from weatherbean order by id")
     fun getAllWeather(): Flow<List<WeatherBean>>
 //    fun getAllWeather():LiveData<List<WeatherBean>>
 
@@ -30,7 +30,6 @@ interface WeatherDao {
 
     @Query("select address from weatherbean")
     fun selectLocalCity():Flow<List<String>>
-
 
     @Delete
     suspend fun deleteCity(weatherBean: WeatherBean)

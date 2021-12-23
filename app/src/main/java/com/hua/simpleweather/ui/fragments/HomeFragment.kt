@@ -27,9 +27,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
-    @Inject
-    lateinit var weatherService: WeatherService
-
     private val viewModel by activityViewModels<MainViewModel>()
     private var swip:SwipeRefreshLayout?=null
     override fun onCreateView(

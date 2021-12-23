@@ -10,7 +10,7 @@ import com.hua.simpleweather.network.bean.Weather
  * @Desc   : 网络数据转本次数据库可存数据
  */
 object WeatherToWeatherBean {
-    fun change(weather: Weather): WeatherBean {
+    fun change(weather: Weather,id:Int): WeatherBean {
         val realtime = weather.realtimeresponse!!.result.realtime
         val daily = weather.dailyresponse!!.result.daily
         val life = listOf(
@@ -29,6 +29,7 @@ object WeatherToWeatherBean {
             daily.skycon,
             life,
             weather.cityName,
+            id
         )
     }
 }

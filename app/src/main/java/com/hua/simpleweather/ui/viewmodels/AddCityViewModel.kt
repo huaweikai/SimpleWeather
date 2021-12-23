@@ -46,9 +46,11 @@ class AddCityViewModel @Inject constructor(
     fun addCity(localCity: LocalCity){
         viewModelScope.launch {
             val primary = localCity.lng + localCity.lat
-            if(netRepository.cityExist(primary) == 0){
+            //用于排序使用
+            val num = netRepository.cityExist(primary)
+            if(num == 0){
                 netRepository.getWeather(localCity.lng,localCity.lat,localCity.cityName)?.let {
-                    netRepository.insertWeather(it)
+                    netRepository.insertWeather(it,num)
                     _addEvent.value = ActionEvent.Success
                 }
             }else{

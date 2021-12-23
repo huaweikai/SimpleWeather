@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/fragment_city.xml" value="0.1644021739130435" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_add_city.xml" value="0.1793478260869565" />
+        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_city.xml" value="0.1644021739130435" />
       </map>
     </option>
   </component>
