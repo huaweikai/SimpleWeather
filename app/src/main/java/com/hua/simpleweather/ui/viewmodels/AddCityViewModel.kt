@@ -47,11 +47,14 @@ class AddCityViewModel @Inject constructor(
         viewModelScope.launch {
             val primary = localCity.lng + localCity.lat
             //用于排序使用
-            val num = netRepository.cityExist(primary)
-            if(num == 0){
-                netRepository.getWeather(localCity.lng,localCity.lat,localCity.cityName)?.let {
-                    netRepository.insertWeather(it,num)
+            val num = netRepository.getCityCount()
+            if(netRepository.cityExist(primary) == 0){
+                val weather = netRepository.getWeather(localCity.lng,localCity.lat,localCity.cityName)
+                if(weather!=null){
+                    netRepository.insertWeather(weather,num)
                     _addEvent.value = ActionEvent.Success
+                }else{
+                    _addEvent.value = ActionEvent.Error("无网络,添加失败")
                 }
             }else{
                 _addEvent.value = ActionEvent.Error("已存在")

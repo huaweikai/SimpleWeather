@@ -27,9 +27,6 @@ class MainActivity : AppCompatActivity() {
     private var _bind :ActivityMainBinding ?= null
     private val bind get() = _bind!!
 
-    @Inject
-    lateinit var dao: WeatherDao
-
     private val viewModel by viewModels<MainViewModel>()
     private lateinit var navController: NavController
     private lateinit var sp:SharedPreferences
@@ -60,7 +57,7 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             //如果没有一个城市就直接到城市管理界面
-            if(dao.getCityCount() <= 0){
+            if(viewModel.getCityCount() <= 0){
                 navController.navigate(R.id.cityFragment)
             }
         }

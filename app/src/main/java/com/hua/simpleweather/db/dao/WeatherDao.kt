@@ -25,7 +25,7 @@ interface WeatherDao {
     @Query("select count(*) from weatherbean where :address = address")
     suspend fun cityExist(address:String):Int
 
-    @Query("select lng,lat,cityName from weatherbean")
+    @Query("select lng,lat,cityName from weatherbean order by id")
     suspend fun selectAllCities():List<CityBean>
 
     @Query("select address from weatherbean")

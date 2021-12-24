@@ -79,4 +79,8 @@ class NetRepository @Inject constructor(
     suspend fun deleteCity(weatherBean: WeatherBean){
         return dao.deleteCity(weatherBean)
     }
+    //获取城市数量
+    suspend fun getCityCount():Int{
+        return dao.getCityCount()
+    }
 }

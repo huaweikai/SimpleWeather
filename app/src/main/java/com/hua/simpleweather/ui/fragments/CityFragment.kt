@@ -1,12 +1,10 @@
 package com.hua.simpleweather.ui.fragments
 
+import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -19,8 +17,7 @@ import com.hua.simpleweather.databinding.FragmentCityBinding
 import com.hua.simpleweather.other.Contacts.CITY_TO_HOME
 import com.hua.simpleweather.ui.adapter.CityAdapter
 import com.hua.simpleweather.ui.viewmodels.MainViewModel
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.InternalCoroutinesApi
+import com.hua.simpleweather.utils.dp
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -56,14 +53,27 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
                 }
             },
             {
+                //长按已被弃用
                 //如果adapter某一个长按，将确认键显示
-                bind.cityOk.isVisible = true
+//                bind.cityOk.isVisible = true
             }
         )
 
         bind.cityRv.apply {
             this.adapter = adapter
             this.layoutManager = GridLayoutManager(requireContext(), 2)
+            this.addItemDecoration(object :RecyclerView.ItemDecoration(){
+                override fun getItemOffsets(
+                    outRect: Rect,
+                    view: View,
+                    parent: RecyclerView,
+                    state: RecyclerView.State
+                ) {
+                    outRect.bottom = 20.dp
+                    outRect.left = 12.dp
+//                    outRect.right = 6.dp
+                }
+            })
         }
 
         lifecycleScope.launch {
@@ -103,12 +113,10 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
         bind.cityOk.setOnClickListener {
             if(adapter.isDeleteTime){
                 adapter.isDeleteTime = false
-                adapter.notifyItemRangeChanged(0,adapter.itemCount)
                 bind.cityOk.setImageResource(R.drawable.ic_more)
             }else{
                 adapter.isDeleteTime = true
-                adapter.notifyItemRangeChanged(0,adapter.itemCount)
-                bind.cityOk.setImageResource(R.drawable.ic_baseline_check_24)
+                bind.cityOk.setImageResource(R.drawable.ic_check)
             }
 //            //如果删除完毕，再次更新adapter，让删除图标消失,同时让确认图标消失
 //            adapter.isDeleteTime = false

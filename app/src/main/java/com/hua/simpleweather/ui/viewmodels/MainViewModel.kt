@@ -16,7 +16,9 @@ import com.hua.simpleweather.repository.NetRepository
 import com.hua.simpleweather.repository.PlaceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -37,14 +39,18 @@ class MainViewModel @Inject constructor(
 ) : AndroidViewModel(context) {
 
     //刷新天气的事件，用于刷新后将swiplayout停止
-    private val _refreshWeather = MutableStateFlow<ActionEvent>(ActionEvent.Empty)
-    val refreshWeather :StateFlow<ActionEvent> get() = _refreshWeather
+    private val _refreshWeather = MutableSharedFlow<ActionEvent>()
+    val refreshWeather :SharedFlow<ActionEvent> get() = _refreshWeather
 
     val roomWeather = netRepository.getAllWeather()
 
     init{
         //启动app刷新一次天气
-        reFreshWeather()
+        viewModelScope.launch {
+            if(netRepository.getCityCount() > 0){
+                reFreshWeather()
+            }
+        }
     }
 
     //第一次进入软件进行地址导入
@@ -74,14 +80,18 @@ class MainViewModel @Inject constructor(
 
     //批量刷新天气
     fun reFreshWeather(){
-        _refreshWeather.value = ActionEvent.Loading
+//        _refreshWeather.value = ActionEvent.Loading
+        _refreshWeather.tryEmit(ActionEvent.Loading)
+        var isSuccess = false
         viewModelScope.launch{
             placeRepository.selectCities().forEachIndexed {index, it ->
-                    netRepository.getWeather(it.lng,it.lat,it.cityName)?.let { weather->
-                        netRepository.insertWeather(weather,index)
+                val weather = netRepository.getWeather(it.lng,it.lat,it.cityName)
+                if(weather != null){
+                    isSuccess = true
+                    netRepository.insertWeather(weather,index)
                 }
             }
-            _refreshWeather.value = ActionEvent.Success
+            _refreshWeather.emit(if(isSuccess) ActionEvent.Success else ActionEvent.Error("网络不佳"))
         }
     }
 
@@ -96,5 +106,8 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             netRepository.updateWeather(weatherBean)
         }
+    }
+    suspend fun getCityCount():Int{
+        return netRepository.getCityCount()
     }
 }

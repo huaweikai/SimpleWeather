@@ -19,6 +19,7 @@ import com.hua.simpleweather.network.interfaces.WeatherService
 import com.hua.simpleweather.other.Contacts.CITY_TO_HOME
 import com.hua.simpleweather.ui.adapter.WeatherViewPagerAdapter
 import com.hua.simpleweather.ui.viewmodels.MainViewModel
+import com.hua.simpleweather.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -67,8 +68,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             viewModel.refreshWeather.collect {
                 when(it){
                     is ActionEvent.Loading -> swip?.isRefreshing = true
+                    is ActionEvent.Error -> {
+                        swip?.isRefreshing = false
+                        swip = null
+                        it.message.toast(requireContext())
+                    }
+                    is ActionEvent.Success->{
+                        swip?.isRefreshing = false
+                        swip = null
+                        "刷新成功".toast(requireContext())
+                    }
                     else -> {
-                        //如果刷新完，就关闭刷新显示，并将swip设置null，不长期持有
                         swip?.isRefreshing = false
                         swip = null
                     }

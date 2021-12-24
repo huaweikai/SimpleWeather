@@ -4,17 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/city_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        android:text="城市管理"
+        android:textSize="30sp" />
+
     <SearchView
         android:id="@+id/city_search"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_below="@id/city_desc"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/background"
-        android:queryBackground="@null"
-        android:queryHint="输入城市" />
+        android:queryBackground="@null" />
 
     <ImageView
         android:id="@+id/city_ok"
@@ -23,6 +32,7 @@
         android:layout_below="@id/city_search"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
         android:src="@drawable/ic_more"
         android:visibility="visible" />
 
@@ -32,6 +42,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/city_ok"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp" />
+
+
 </RelativeLayout>

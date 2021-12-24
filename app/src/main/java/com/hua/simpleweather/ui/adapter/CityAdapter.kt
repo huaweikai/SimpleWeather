@@ -3,12 +3,14 @@ package com.hua.simpleweather.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.hua.simpleweather.db.dao.bean.WeatherBean
 import com.hua.simpleweather.databinding.ItemCityBinding
 import com.hua.simpleweather.other.getSky
+import com.hua.simpleweather.utils.dp
 import kotlin.math.roundToInt
 
 /**
@@ -31,16 +33,23 @@ class CityAdapter(
         }
     }
 ) {
-     var isDeleteTime = false
+    var isDeleteTime = false
+        set(value) {
+            field = value
+            notifyItemRangeChanged(0,itemCount)
+        }
     class VHolder(val bind:ItemCityBinding):RecyclerView.ViewHolder(bind.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VHolder {
+        val width = parent.context.resources.displayMetrics.widthPixels
         val holder = VHolder(
             ItemCityBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            )
+            ).apply {
+                cityCard.layoutParams = ViewGroup.LayoutParams((width/20)*9, 150.dp)
+            }
         ).apply {
             bind.root.isClickable = !isDeleteTime
             bind.cityDelete.setOnClickListener {
@@ -72,7 +81,6 @@ class CityAdapter(
 
             cityDelete.isVisible = isDeleteTime
 
-            root.isLongClickable = isDeleteTime
 
         }
     }

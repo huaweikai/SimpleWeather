@@ -3,9 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/fragment_city.xml" value="0.1644021739130435" />
+        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/drawable-v24/ic_baseline_check_24.xml" value="0.26153846153846155" />
+        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/fragment_add_city.xml" value="0.24947916666666667" />
+        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/fragment_city.xml" value="0.2" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_add_city.xml" value="0.1793478260869565" />
-        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_city.xml" value="0.1644021739130435" />
+        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_city.xml" value="0.264" />
       </map>
     </option>
   </component>
