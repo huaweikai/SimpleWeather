@@ -82,16 +82,8 @@ class MainViewModel @Inject constructor(
     fun reFreshWeather(){
 //        _refreshWeather.value = ActionEvent.Loading
         _refreshWeather.tryEmit(ActionEvent.Loading)
-        var isSuccess = false
         viewModelScope.launch{
-            placeRepository.selectCities().forEachIndexed {index, it ->
-                val weather = netRepository.getWeather(it.lng,it.lat,it.cityName)
-                if(weather != null){
-                    isSuccess = true
-                    netRepository.insertWeather(weather,index)
-                }
-            }
-            _refreshWeather.emit(if(isSuccess) ActionEvent.Success else ActionEvent.Error("网络不佳"))
+            _refreshWeather.emit(if(updateWeather()) ActionEvent.Success else ActionEvent.Error("网络不佳"))
         }
     }
 
@@ -99,7 +91,23 @@ class MainViewModel @Inject constructor(
     fun deleteWeatherBean(weatherBean: WeatherBean){
         viewModelScope.launch {
             netRepository.deleteCity(weatherBean)
+            //当删除非最后一个城市后，里面的id可能会错乱，导致再次添加城市时会出现两个id一样的情况
+            //所以在删除之后再次刷新天气时可以做到顺序重排
+            //但此时刷新要做到的是用户无感知，所以将刷新天气提取出来，不需要提示用户
+            updateWeather()
         }
+    }
+
+    private suspend fun updateWeather():Boolean{
+        var isSuccess = false
+            placeRepository.selectCities().forEachIndexed {index, it ->
+                val weather = netRepository.getWeather(it.lng,it.lat,it.cityName)
+                if(weather != null){
+                    isSuccess = true
+                    netRepository.insertWeather(weather,index)
+                }
+            }
+        return isSuccess
     }
 
     fun updateWeather(weatherBean: WeatherBean){
