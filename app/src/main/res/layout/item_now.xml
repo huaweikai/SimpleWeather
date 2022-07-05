@@ -1,28 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/nowLayout"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/nowLayout"
     android:layout_width="match_parent"
     android:layout_height="530dp"
     android:orientation="vertical">
-    <FrameLayout
-        android:id="@+id/titleLayout"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:fitsSystemWindows="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/titleLayout"
+            android:paddingTop="42dp"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:fitsSystemWindows="true">
 
         <TextView
-            android:id="@+id/city_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="60dp"
-            android:ellipsize="middle"
-            android:singleLine="true"
-            android:textColor="#fff"
-            android:textSize="22sp" />
-    </FrameLayout>
+                android:id="@+id/city_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:ellipsize="middle"
+                android:singleLine="true"
+                android:textColor="#fff"
+                android:textSize="22sp"
+                app:layout_constraintEnd_toStartOf="@+id/main_add"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="56dp"
+                android:layout_marginEnd="8dp" />
+
+        <ImageView
+                android:id="@+id/main_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_add"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="24dp"
+                app:tint="#fff"
+                android:contentDescription="add" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <LinearLayout
         android:id="@+id/bodyLayout"
         android:layout_width="match_parent"

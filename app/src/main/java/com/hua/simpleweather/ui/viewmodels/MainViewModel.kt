@@ -2,26 +2,21 @@ package com.hua.simpleweather.ui.viewmodels
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.hua.simpleweather.ActionEvent
-import com.hua.simpleweather.db.dao.WeatherDao
 import com.hua.simpleweather.db.dao.bean.LocalCity
 import com.hua.simpleweather.db.dao.bean.WeatherBean
-import com.hua.simpleweather.network.bean.Weather
 import com.hua.simpleweather.other.Contacts.FIRST_ACTION
-import com.hua.simpleweather.other.Contacts.FIRST_ACTION_ISFIRST
+import com.hua.simpleweather.other.Contacts.FIRST_ACTION_IS_FIRST
 import com.hua.simpleweather.repository.NetRepository
 import com.hua.simpleweather.repository.PlaceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import javax.inject.Inject
@@ -43,6 +38,20 @@ class MainViewModel @Inject constructor(
     val refreshWeather :SharedFlow<ActionEvent> get() = _refreshWeather
 
     val roomWeather = netRepository.getAllWeather()
+
+    val roomWeatherLiveData = roomWeather.asLiveData(viewModelScope.coroutineContext).value
+
+    var cityList = listOf<WeatherBean>()
+
+    fun selectCityList(
+        updateView:()->Unit
+    ){
+        viewModelScope.launch {
+            cityList = netRepository.selectCityWeather()
+            updateView()
+        }
+    }
+
 
     init{
         //启动app刷新一次天气
@@ -73,7 +82,7 @@ class MainViewModel @Inject constructor(
         }
         getApplication<Application>().getSharedPreferences(FIRST_ACTION, Context.MODE_PRIVATE)
             .edit().putBoolean(
-                FIRST_ACTION_ISFIRST, false
+                FIRST_ACTION_IS_FIRST, false
             ).apply()
     }
 
@@ -95,6 +104,7 @@ class MainViewModel @Inject constructor(
             //所以在删除之后再次刷新天气时可以做到顺序重排
             //但此时刷新要做到的是用户无感知，所以将刷新天气提取出来，不需要提示用户
             updateWeather()
+            selectCityList {  }
         }
     }
 
@@ -110,6 +120,19 @@ class MainViewModel @Inject constructor(
         return isSuccess
     }
 
+    fun updateCity(
+        fromPosition:Int,
+        toPosition:Int,
+        replaceOk:(List<WeatherBean>)->Unit
+    ){
+        cityList.toMutableList().apply {
+            removeAt(fromPosition)
+            add(toPosition,cityList[fromPosition])
+            replaceOk(this)
+            cityList = this
+        }
+    }
+
     fun updateWeather(weatherBean: WeatherBean){
         viewModelScope.launch {
             netRepository.updateWeather(weatherBean)
@@ -117,5 +140,11 @@ class MainViewModel @Inject constructor(
     }
     suspend fun getCityCount():Int{
         return netRepository.getCityCount()
+    }
+
+    fun replaceWeatherSort(){
+        viewModelScope.launch {
+            netRepository.updateCityCount(cityList)
+        }
     }
 }

@@ -24,7 +24,7 @@ object WeatherToWeatherBean {
             weather.realtimeresponse.location[0],
             realtime.skycon,
             realtime.temperature,
-            realtime.airQuality.aqi.chn,
+            realtime.airQuality.pm25.toFloat(),
             daily.temperature,
             daily.skycon,
             life,

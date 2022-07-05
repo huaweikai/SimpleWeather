@@ -13,6 +13,7 @@ import javax.inject.Inject
  * @Date   : 2021/12/22
  * @Desc   : repository
  */
+
 class PlaceRepository @Inject constructor(
     private val cityDao: CityDao,
     private val weatherDao: WeatherDao

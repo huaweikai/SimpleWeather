@@ -11,9 +11,9 @@
         android:scrollbars="none"
         android:overScrollMode="never"
         android:visibility="visible">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
 
             <LinearLayout
                 android:orientation="vertical"
@@ -34,15 +34,8 @@
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/main_add"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="50dp"
-                android:layout_marginEnd="30dp"
-                android:src="@drawable/ic_add" />
-        </RelativeLayout>
+
+<!--        </RelativeLayout>-->
 
     </ScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

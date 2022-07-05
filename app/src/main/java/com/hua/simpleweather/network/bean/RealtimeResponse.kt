@@ -17,7 +17,7 @@ data class RealtimeResponse(
         @SerializedName("air_quality") val airQuality: AirQuality
     )
 
-    data class AirQuality(val aqi: AQI)
+    data class AirQuality(val pm25:Int)
 
-    data class AQI(val chn: Float)
+//    data class AQI(val chn: Float)
 }

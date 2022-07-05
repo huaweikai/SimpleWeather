@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -41,24 +42,30 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
             findNavController().navigate(R.id.action_cityFragment_to_addCityFragment)
         }
         val adapter = CityAdapter(
-            {
+           onDeleteClick =  {
                 //点到了删除按钮
                 viewModel.deleteWeatherBean(it)
             },
-            { position ->
+            onclick = { position ->
                 //点到item，回到天气界面
                 Bundle().also {
                     it.putInt(CITY_TO_HOME, position)
-                    findNavController().navigate(R.id.action_cityFragment_to_homeFragment, it)
+                    val options = NavOptions.Builder()
+                        .setPopUpTo(R.id.cityFragment,true)
+                        .setLaunchSingleTop(true)
+                        .build()
+                    findNavController().navigate(R.id.action_cityFragment_to_homeFragment, it,options)
                 }
             },
-            {
+            onLongClick = {
                 //长按已被弃用
                 //如果adapter某一个长按，将确认键显示
 //                bind.cityOk.isVisible = true
             }
         )
-
+        viewModel.selectCityList {
+            adapter.submitList(viewModel.cityList)
+        }
         bind.cityRv.apply {
             this.adapter = adapter
             this.layoutManager = GridLayoutManager(requireContext(), 2)
@@ -76,11 +83,6 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
             })
         }
 
-        lifecycleScope.launch {
-            viewModel.roomWeather.collect {
-                adapter.submitList(it)
-            }
-        }
         val helper = ItemTouchHelper(object :ItemTouchHelper.Callback(){
             override fun getMovementFlags(
                 recyclerView: RecyclerView,
@@ -96,10 +98,9 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
             ): Boolean {
-                val actionData = adapter.currentList[viewHolder.adapterPosition]
-                val targetData = adapter.currentList[target.adapterPosition]
-                viewModel.updateWeather(actionData.copy(id = target.adapterPosition))
-                viewModel.updateWeather(targetData.copy(id = viewHolder.adapterPosition))
+                viewModel.updateCity(viewHolder.adapterPosition,target.adapterPosition){
+                    adapter.submitList(it)
+                }
                 return true
             }
 
@@ -112,17 +113,21 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
 
         bind.cityOk.setOnClickListener {
             if(adapter.isDeleteTime){
-                adapter.isDeleteTime = false
                 bind.cityOk.setImageResource(R.drawable.ic_more)
             }else{
-                adapter.isDeleteTime = true
                 bind.cityOk.setImageResource(R.drawable.ic_check)
             }
+            adapter.isDeleteTime = !adapter.isDeleteTime
 //            //如果删除完毕，再次更新adapter，让删除图标消失,同时让确认图标消失
 //            adapter.isDeleteTime = false
 //            adapter.notifyItemRangeChanged(0, adapter.itemCount)
 //            bind.cityOk.isVisible = false
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.replaceWeatherSort()
     }
 
 }

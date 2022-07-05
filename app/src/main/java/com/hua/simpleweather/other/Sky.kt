@@ -29,6 +29,6 @@ class Sky(val info:String,val icon:Int,val bg:Int)
         "FOG" to Sky("雾", R.drawable.ic_fog, R.drawable.bg_fog),
         "DUST" to Sky("浮尘", R.drawable.ic_fog, R.drawable.bg_fog)
     )
-    fun getSky(skyIcon: String): Sky {
+    fun getSky(skyIcon: String?): Sky {
         return (sky[skyIcon] ?: sky["CLEAR_DAY"])!!
     }

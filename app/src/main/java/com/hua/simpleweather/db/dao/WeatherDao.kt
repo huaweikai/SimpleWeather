@@ -13,13 +13,17 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface WeatherDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertWeather(weatherBean: WeatherBean)
+    suspend fun insertWeather(vararg weatherBean: WeatherBean)
 
     @Query("select count(*) from weatherbean")
     suspend fun getCityCount():Int
 
     @Query("select * from weatherbean order by id")
     fun getAllWeather(): Flow<List<WeatherBean>>
+//    fun getAllWeather():LiveData<List<WeatherBean>>
+
+    @Query("select * from weatherbean order by id")
+    suspend fun selectCityWeather(): List<WeatherBean>
 //    fun getAllWeather():LiveData<List<WeatherBean>>
 
     @Query("select count(*) from weatherbean where :address = address")
@@ -33,4 +37,15 @@ interface WeatherDao {
 
     @Delete
     suspend fun deleteCity(weatherBean: WeatherBean)
+
+    @Query("delete from weatherbean")
+    suspend fun deleteAllWeather()
+
+
+
+    @Transaction
+    suspend fun updateCity(list:List<WeatherBean>){
+        deleteAllWeather()
+        insertWeather(*list.toTypedArray())
+    }
 }

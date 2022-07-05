@@ -9,6 +9,7 @@ import com.hua.simpleweather.other.WeatherToWeatherBean
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import java.lang.Exception
 import javax.inject.Inject
@@ -37,11 +38,8 @@ class NetRepository @Inject constructor(
                 }
                 val realtimeResponse = realtimeTry.getOrNull()
                 val dailyResponse = dailyTry.getOrNull()
-                Log.d("TAG", "getWeather: $dailyResponse $realtimeResponse")
                 if(realtimeResponse?.status == "ok" && dailyResponse?.status == "ok"){
-                    Weather(realtimeResponse, dailyResponse, cityName).apply {
-                        Log.d("TAG", "getWeather: $this")
-                    }
+                    Weather(realtimeResponse, dailyResponse, cityName)
                 }else{
                     null
                 }
@@ -56,6 +54,11 @@ class NetRepository @Inject constructor(
     fun getAllWeather(): Flow<List<WeatherBean>> {
         return dao.getAllWeather()
     }
+
+    suspend fun selectCityWeather(): List<WeatherBean> {
+        return dao.selectCityWeather()
+    }
+
 
     //添加城市
     suspend fun insertWeather(weather: Weather,id:Int) {
@@ -82,5 +85,13 @@ class NetRepository @Inject constructor(
     //获取城市数量
     suspend fun getCityCount():Int{
         return dao.getCityCount()
+    }
+
+    suspend fun updateCityCount(list: List<WeatherBean>){
+        dao.updateCity(
+            list.mapIndexed { index, weatherBean ->
+                weatherBean.copy(id = index)
+            }
+        )
     }
 }
