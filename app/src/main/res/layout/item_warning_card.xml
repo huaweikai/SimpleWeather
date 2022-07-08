@@ -10,10 +10,7 @@
         <TextView
                 android:id="@+id/item_warn_title"
                 android:text="天气预警"
-                android:layout_margin="8dp"
-                style="@style/TextAppearance.Material3.TitleMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            style="@style/Item_car_Title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

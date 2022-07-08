@@ -38,7 +38,12 @@ fun LocationManager.getLocation(
 ){
     if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.R){
         getCurrentLocation(provider, CancellationSignal(),context.mainExecutor){it->
-            getAddress(LocationUtils.getAddress(context,it.longitude,it.latitude))
+            if(it != null){
+                getAddress(LocationUtils.getAddress(context,it.longitude,it.latitude))
+            }else{
+                getAddress(null)
+            }
+
         }
 
     }else{

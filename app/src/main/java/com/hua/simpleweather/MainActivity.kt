@@ -90,13 +90,14 @@ class MainActivity : AppCompatActivity() {
         sp = getSharedPreferences(FIRST_ACTION, MODE_PRIVATE)
         val isFirst = sp.getBoolean(FIRST_ACTION_IS_FIRST, true)
         if (isFirst) viewModel.firstAction()
-        locationPermission.launch(
-            arrayOf(
-                Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-            )
-        )
+        permissionCancel()
+//        locationPermission.launch(
+//            arrayOf(
+//                Manifest.permission.READ_PHONE_STATE,
+//                Manifest.permission.ACCESS_FINE_LOCATION,
+//                Manifest.permission.ACCESS_COARSE_LOCATION,
+//            )
+//        )
     }
 
     private fun getLocation() {

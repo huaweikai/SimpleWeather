@@ -49,7 +49,8 @@ data class WeatherVO(
             val cloudRate:Float,
             val humidity:Float,
             val visibility:Float,
-            val pressure:Float
+            val pressure:Float,
+            val dswrf:Float
         )
 
         @Serializable

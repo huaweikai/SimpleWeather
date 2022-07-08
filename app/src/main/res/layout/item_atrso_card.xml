@@ -12,13 +12,9 @@
         <TextView
                 android:id="@+id/item_atrso_title"
                 android:text="@string/string_atrso"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                style="@style/TextAppearance.Material3.TitleMedium"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp" />
+            style="@style/Item_car_Title" />
 
         <com.hua.simpleweather.ui.view.SunView
                 app:layout_constraintTop_toBottomOf="@id/item_atrso_title"

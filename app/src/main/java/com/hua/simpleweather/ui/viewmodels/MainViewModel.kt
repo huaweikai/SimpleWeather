@@ -151,8 +151,10 @@ class MainViewModel @Inject constructor(
     }
 
     suspend fun addLocation(address: Address): Boolean {
-        val lng = address.longitude.toString()
-        val lat = address.latitude.toString()
+        val lng = "116.813752"
+        val lat = "39.820015"
+//        val lng = address.longitude.toString()
+//        val lat = address.latitude.toString()
         val cityName = "${address.locality}${address.featureName}"
         val oldWeather = netRepository.selectLocationWeather()
         if (oldWeather!=null && oldWeather.lat.toDouble().roundToInt() == address.latitude.roundToInt()

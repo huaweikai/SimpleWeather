@@ -43,6 +43,7 @@ class WeatherModuleAdapter(
     private val typeList = arrayListOf(
         ViewTye.ViewTypeNow, ViewTye.ViewTypeRealTime,
         ViewTye.ViewTypeHour, ViewTye.ViewTypeSun,
+        ViewTye.ViewTypeDetail,
         ViewTye.ViewTypeAbout
     )
 
@@ -125,6 +126,9 @@ class WeatherModuleAdapter(
                     }
                 }
             }
+            ViewTye.ViewTypeDetail.type->{
+                DetailHolder(ItemRealtimeDetailCardBinding.inflate(layoutInflater,parent,false),color)
+            }
             else -> {
                 AboutHolder(
                     ItemAboutBinding.inflate(
@@ -168,5 +172,6 @@ sealed class ViewTye(val type: Int) {
     object ViewTypeRealTime : ViewTye(3)
     object ViewTypeHour : ViewTye(4)
     object ViewTypeSun : ViewTye(5)
-    object ViewTypeAbout : ViewTye(6)
+    object ViewTypeDetail:ViewTye(6)
+    object ViewTypeAbout : ViewTye(7)
 }
