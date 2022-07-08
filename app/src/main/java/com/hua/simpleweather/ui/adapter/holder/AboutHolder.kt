@@ -5,9 +5,10 @@ import com.hua.model.weather.WeatherVO
 import com.hua.simpleweather.databinding.ItemAboutBinding
 
 class AboutHolder(
-    private val bind:ItemAboutBinding
-):AbstractMainHolder(bind) {
-    override fun onBindView(data: WeatherVO,colorData: ColorContainerData) {
+    private val bind:ItemAboutBinding,
+    colorData: ColorContainerData
+):AbstractMainHolder(bind,colorData) {
+    override fun onBindView(data: WeatherVO) {
 
     }
 }

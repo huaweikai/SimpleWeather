@@ -5,6 +5,7 @@
     android:id="@+id/city_card"
     android:layout_width="match_parent"
     android:layout_height="150dp"
+        style="@style/Main_Card"
     app:cardCornerRadius="20dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout

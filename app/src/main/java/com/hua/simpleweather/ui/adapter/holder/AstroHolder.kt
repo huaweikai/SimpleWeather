@@ -8,9 +8,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class AstroHolder(
-    private val bind: ItemAtrsoCardBinding
-) : AbstractMainHolder(bind) {
-    override fun onBindView(data: WeatherVO, colorData: ColorContainerData) {
+    private val bind: ItemAtrsoCardBinding,
+    colorData: ColorContainerData
+) : AbstractMainHolder(bind,colorData) {
+    override fun onBindView(data: WeatherVO) {
         val day = data.result.daily.astro[0]
         bind.apply {
             sunView.setColor(colorData)

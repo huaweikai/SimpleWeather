@@ -53,7 +53,9 @@ class MainActivity : AppCompatActivity() {
             if (it.values.contains(false)) {
                 permissionCancel()
             } else {
-                getLocation()
+                lifecycleScope.launch(Dispatchers.Default){
+                    getLocation()
+                }
             }
         }
 

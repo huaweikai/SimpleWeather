@@ -44,7 +44,12 @@ data class WeatherVO(
             val parentTemperature: Float,
             @SerialName("air_quality")
             @Embedded("air_")
-            val airQuality: AirQuality
+            val airQuality: AirQuality,
+            @SerialName("cloudrate")
+            val cloudRate:Float,
+            val humidity:Float,
+            val visibility:Float,
+            val pressure:Float
         )
 
         @Serializable
@@ -95,7 +100,7 @@ data class WeatherVO(
         )
 
         @Serializable
-        data class LifeDescription(val desc: String)
+        data class LifeDescription(val desc: String,val date:String,val index:Int)
 
         @Serializable
         data class Alert(val status: String, val content: List<Content>)

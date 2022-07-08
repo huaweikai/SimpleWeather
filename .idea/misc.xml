@@ -21,11 +21,14 @@
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/drawable/sky_detail_aqi.xml" value="0.2345" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout-v28/item_realtime_survey.xml" value="0.22644927536231885" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/activity_main.xml" value="0.176" />
+        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/forecast_item.xml" value="0.23645833333333333" />
+        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/fragement_warn.xml" value="0.23541666666666666" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/fragment_add_city.xml" value="0.24947916666666667" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/fragment_city.xml" value="0.2" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/fragment_home.xml" value="0.2" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_about.xml" value="0.22644927536231885" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_add_city.xml" value="0.1793478260869565" />
+        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_alert.xml" value="0.23541666666666666" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_atrso_card.xml" value="0.264" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_city.xml" value="0.6" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_forecast.xml" value="0.22644927536231885" />
@@ -34,20 +37,47 @@
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_main_viewpager.xml" value="0.1" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_now.xml" value="0.2" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_now_.xml" value="0.2" />
+        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_now_card.xml" value="0.23645833333333333" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_realtime_survey.xml" value="0.1" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_realtime_survey_card.xml" value="0.4" />
-        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_warning_card.xml" value="0.23645833333333333" />
+        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_warn_card.xml" value="0.23541666666666666" />
+        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_warning_card.xml" value="0.4" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_weather_main.xml" value="0.22644927536231885" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_weather_pager.xml" value="0.23541666666666666" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/min.xml" value="0.18369829683698297" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/rv_item_hour.xml" value="0.2" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.265625" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.265625" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_big_rain.xml" value="0.231" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_cloud.xml" value="0.2345" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_cloudy_night.xml" value="0.2345" />
         <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_fog.xml" value="0.2265" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_fuchen.xml" value="0.2345" />
         <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_haze.xml" value="0.2265" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_heavy_snow.xml" value="0.2345" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_light_snow.xml" value="0.2345" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_middle_rain.xml" value="0.2345" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_moderate_snow.xml" value="0.2345" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_nodata.xml" value="0.2345" />
         <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_overcast.xml" value="0.2265" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_rain_ice.xml" value="0.2345" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_rain_snow.xml" value="0.2345" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_shower.xml" value="0.2345" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_small_rain.xml" value="0.2345" />
         <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_snow_flurry.xml" value="0.2265" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_snow_storm.xml" value="0.2345" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_sunny.xml" value="0.2345" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_thunder_rain.xml" value="0.2345" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_warn_dense_fog.xml" value="0.2345" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_warn_dust_strom.xml" value="0.2345" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_warn_haze.xml" value="0.2345" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_warn_high_temp.xml" value="0.2345" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_warn_low_temp.xml" value="0.2345" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_warn_typhoon.xml" value="0.2345" />
         <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_wind_nav.xml" value="0.2345" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_windy.xml" value="0.231" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_yangsha.xml" value="0.2345" />
+        <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_yejian_zhenyu.xml" value="0.2345" />
         <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/ic_yewan_qing.xml" value="0.2265" />
         <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/x_cloudy_night.xml" value="0.2265" />
         <entry key="..\:/Documents/SimpleWeather/resource/src/main/res/drawable/x_fog.xml" value="0.2265" />

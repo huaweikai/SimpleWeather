@@ -8,9 +8,10 @@ import com.hua.model.weather.WeatherVO
 import com.hua.simpleweather.db.dao.bean.WeatherPO
 
 abstract class AbstractMainHolder(
-    viewBind:ViewBinding
+    viewBind:ViewBinding,
+    val colorData: ColorContainerData
 ):RecyclerView.ViewHolder(viewBind.root) {
 
-    abstract fun onBindView(data:WeatherVO,colorData:ColorContainerData)
+    abstract fun onBindView(data:WeatherVO)
 
 }

@@ -72,6 +72,7 @@ class WeatherViewPagerAdapter(
         holder.bind.itemWeatherRv.apply {
             this.adapter = adapter
             this.layoutManager = LinearLayoutManager(holder.itemView.context)
+            addItemDecoration(ModuleItemDecoration())
         }
         holder.bind.itemWeatherBg.load(
             getDayBg(data.result.realtime.skycon)

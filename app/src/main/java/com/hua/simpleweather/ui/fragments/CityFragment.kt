@@ -54,15 +54,9 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
                 //点到item，回到天气界面
                 Bundle().also {
                     it.putInt(CITY_TO_HOME, position)
-                    val options = NavOptions.Builder()
-                        .setPopUpTo(R.id.cityFragment, true)
-                        .setLaunchSingleTop(true)
-                        .build()
                     findNavController().navigate(
                         R.id.action_cityFragment_to_homeFragment,
-                        it,
-                        options
-                    )
+                        it)
                 }
             },
             onLongClick = {

@@ -5,10 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hua.material.materialcolor.ColorContainerData
 import com.hua.model.weather.WeatherVO
-import com.hua.resource.getAQIDesc
-import com.hua.resource.getIcon
+import com.hua.resource.getSkyIcon
 import com.hua.resource.getWind
-import com.hua.resource.getWindDirection
 import com.hua.simpleweather.R
 import com.hua.simpleweather.databinding.ItemHourCardBinding
 import com.hua.simpleweather.databinding.RvItemHourBinding
@@ -20,9 +18,10 @@ import java.util.*
 import kotlin.math.roundToInt
 
 class HourHolder(
-    private val bind: ItemHourCardBinding
-) : AbstractMainHolder(bind) {
-    override fun onBindView(data: WeatherVO, colorData: ColorContainerData) {
+    private val bind: ItemHourCardBinding,
+    colorData: ColorContainerData
+) : AbstractMainHolder(bind,colorData) {
+    override fun onBindView(data: WeatherVO) {
         bind.apply {
             itemHourSubtitle.text = data.result.hourly.desc
             itemHourRv.adapter = HourAdapter(data.result.hourly, colorData)
@@ -57,7 +56,7 @@ class HourHolder(
                     R.string.hour_rain_percent,
                     data.precipitation[position].value.toFloat().roundToInt()
                 )
-                getIcon(data.skyIcon[position].value)?.let { rvHourSkyIcon.setImageResource(it) }
+                getSkyIcon(data.skyIcon[position].value)?.let { rvHourSkyIcon.setImageResource(it) }
                 rvHourTemp.text = getString(
                     R.string.hour_sky_temp,
                     data.temperature[position].value.toFloat().roundToInt()

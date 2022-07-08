@@ -57,4 +57,12 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="8dp"
             android:paddingTop="42dp" />
+    <ImageView
+            android:id="@+id/item_now_sky_icon"
+            tools:srcCompat="@drawable/ic_cloudy_night"
+            android:layout_below="@id/item_now_add"
+            android:layout_margin="16dp"
+            android:layout_alignParentEnd="true"
+            android:layout_width="64dp"
+            android:layout_height="64dp"/>
 </RelativeLayout>

@@ -3,9 +3,8 @@ package com.hua.simpleweather.utils
 import android.app.Activity
 import android.content.Context
 import android.os.Build
-import android.view.View
-import android.view.WindowInsetsController
-import android.view.WindowManager
+import android.util.DisplayMetrics
+import android.view.*
 
 fun Activity.fullScreen() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -55,3 +54,19 @@ fun Activity.setLightStatusBar(isLightBar: Boolean) {
 fun Context.isDarkMode(): Boolean {
     return resources.configuration.uiMode == 0x21
 }
+
+val WindowManager.windowSize: DisplayMetrics
+    get() {
+        val displayMetrics = DisplayMetrics()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val windowMetrics: WindowMetrics = currentWindowMetrics
+            val insets = windowMetrics.windowInsets
+                .getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
+            displayMetrics.widthPixels = windowMetrics.bounds.width() - insets.left - insets.right
+            displayMetrics.heightPixels = windowMetrics.bounds.height() - insets.top - insets.bottom
+        } else {
+            @Suppress("DEPRECATION")
+            defaultDisplay.getMetrics(displayMetrics)
+        }
+        return displayMetrics
+    }

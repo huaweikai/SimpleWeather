@@ -25,11 +25,12 @@ private val skyIcon = mapOf(
     "DUST" to R.drawable.ic_fuchen
 )
 
-fun getIcon(sky: String) = skyIcon[sky]
+fun getSkyIcon(sky: String) = skyIcon[sky] ?: R.drawable.ic_sunny
 
 fun getDayBg(sky: String?): Int {
     return when (sky) {
-        "CLEAR_DAY", "CLOUDY" -> R.mipmap.back_clear_day
+        "CLEAR_DAY" -> R.mipmap.back_900d
+        "CLOUDY" ->R.mipmap.back_cloudy_day
         "CLEAR_NIGHT" -> R.mipmap.back_clear_night
         "PARTLY_CLOUDY_DAY" -> R.mipmap.back_partly_cloud_day
         "PARTLY_CLOUDY_NIGHT" -> R.mipmap.back_partly_cloud_night
@@ -53,7 +54,8 @@ fun getSkyBg(isDark:Boolean,sky: String?) = if (isDark) getNightBg(sky) else get
 
 fun getNightBg(sky: String?): Int {
     return when (sky) {
-        "CLEAR_DAY", "CLOUDY" -> R.mipmap.back_clear_night
+        "CLEAR_DAY" -> R.mipmap.back_900n
+        "CLOUDY" -> R.mipmap.back_cloudy_night
         "CLEAR_NIGHT" -> R.mipmap.back_clear_night
         "PARTLY_CLOUDY_DAY" -> R.mipmap.back_partly_cloud_night
         "PARTLY_CLOUDY_NIGHT" -> R.mipmap.back_partly_cloud_night

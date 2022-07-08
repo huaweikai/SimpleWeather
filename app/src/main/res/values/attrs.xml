@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="LineProgress">
+        <attr format="color" name="maxColor" />
+        <attr format="color" name="progressColor" />
+    </declare-styleable>
+</resources>

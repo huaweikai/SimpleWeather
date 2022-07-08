@@ -14,4 +14,6 @@
     <string name="item_hour_title">小时预览</string>
     <string name="hour_rain_percent">%s%%</string>
     <string name="hour_wind_level">%d 级</string>
+    <string name="warn_desc">%s警告:%s</string>
+    <string name="alert_time">%d年%d月%d日 %s:%s发布</string>
 </resources>

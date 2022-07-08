@@ -12,9 +12,10 @@ import com.hua.simpleweather.utils.toTime
 import java.util.*
 
 class DayKeypointHolder(
-   private val itemRealtimeSurveyBinding: ItemRealtimeSurveyCardBinding
-):AbstractMainHolder(itemRealtimeSurveyBinding) {
-    override fun onBindView(data: WeatherVO,colorData: ColorContainerData) {
+   private val itemRealtimeSurveyBinding: ItemRealtimeSurveyCardBinding,
+   colorData: ColorContainerData
+):AbstractMainHolder(itemRealtimeSurveyBinding,colorData) {
+    override fun onBindView(data: WeatherVO) {
         itemRealtimeSurveyBinding.apply {
             itemSurveyTitle.setTextColor(colorData.primaryColor)
             itemRealtimeSurvey.text = data.result.survey
