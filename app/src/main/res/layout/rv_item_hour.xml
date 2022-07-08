@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingHorizontal="16dp"
+        android:orientation="vertical">
+
+    <TextView
+            tools:text="03:00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:id="@+id/rv_hour_time" />
+
+    <TextView
+            tools:text="25°"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rv_hour_temp" />
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rv_hour_skyIcon"
+            android:layout_marginVertical="4dp"
+            tools:srcCompat="@drawable/ic_cloud" />
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+        <ImageView
+                android:id="@+id/rv_hour_wind_nav"
+                android:src="@drawable/ic_wind_nav"
+                android:layout_width="wrap_content"
+                app:tint="@color/on_back_ground"
+                android:layout_marginEnd="4dp"
+                android:layout_height="wrap_content"/>
+        <TextView
+                tools:text="2级"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rv_hour_wind_detail" />
+    </LinearLayout>
+
+
+
+    <TextView
+            tools:text="优"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:id="@+id/rv_hour_sky_detial" />
+</LinearLayout>

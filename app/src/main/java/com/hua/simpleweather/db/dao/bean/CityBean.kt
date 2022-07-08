@@ -6,7 +6,9 @@ package com.hua.simpleweather.db.dao.bean
  * @Desc   : ben
  */
 data class CityBean(
+    val id:Int,
     val lng:String,
     val lat:String,
-    val cityName:String
+    val cityName:String,
+    val updateTime:Long
 )

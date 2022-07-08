@@ -8,3 +8,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "SimpleWeather"
 include ':app'
+include ':network'
+include ':resource'
+include ':model'
+include ':material'

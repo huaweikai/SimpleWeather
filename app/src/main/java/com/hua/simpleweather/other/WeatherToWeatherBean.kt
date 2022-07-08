@@ -1,8 +1,7 @@
 package com.hua.simpleweather.other
 
-import android.util.Log
-import com.hua.simpleweather.db.dao.bean.WeatherBean
-import com.hua.simpleweather.network.bean.Weather
+import com.hua.simpleweather.db.dao.bean.WeatherPO
+import com.hua.model.weather.WeatherVO
 
 /**
  * @author : huaweikai
@@ -10,25 +9,25 @@ import com.hua.simpleweather.network.bean.Weather
  * @Desc   : 网络数据转本次数据库可存数据
  */
 object WeatherToWeatherBean {
-    fun change(weather: Weather,id:Int): WeatherBean {
-        val realtime = weather.realtimeresponse!!.result.realtime
-        val daily = weather.dailyresponse!!.result.daily
+    fun change(weather: WeatherVO, id: Int): WeatherPO {
+        val realtime = weather.result.realtime
+        val daily = weather.result.daily
         val life = listOf(
             daily.index.coldRisk[0].desc,
             daily.index.dressing[0].desc,
             daily.index.ultraviolet[0].desc,
             daily.index.carWashing[0].desc
         )
-        return WeatherBean(
-            weather.realtimeresponse.location[1],
-            weather.realtimeresponse.location[0],
+        return WeatherPO(
+            weather.location[1],
+            weather.location[0],
             realtime.skycon,
             realtime.temperature,
             realtime.airQuality.pm25.toFloat(),
             daily.temperature,
             daily.skycon,
             life,
-            weather.cityName,
+            "",
             id
         )
     }

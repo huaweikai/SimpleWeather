@@ -1,33 +1,41 @@
 package com.hua.simpleweather
 
 import android.Manifest
+import android.app.Application
 import android.content.*
+import android.location.Location
+import android.location.LocationManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CancellationSignal
+import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.hua.network.Contacts.FIRST_ACTION
+import com.hua.network.Contacts.FIRST_ACTION_IS_FIRST
 import com.hua.simpleweather.databinding.ActivityMainBinding
-import com.hua.simpleweather.network.interfaces.WeatherService
-import com.hua.simpleweather.other.Contacts.FIRST_ACTION
-import com.hua.simpleweather.other.Contacts.FIRST_ACTION_IS_FIRST
+import com.hua.network.api.WeatherService
+import com.hua.network.onSuccess
+import com.hua.simpleweather.db.dao.WeatherDao
 import com.hua.simpleweather.ui.viewmodels.MainViewModel
-import com.hua.simpleweather.utils.disableAutoFill
-import com.hua.simpleweather.utils.fullScreen
-import com.hua.simpleweather.utils.setLightStatusBar
+import com.hua.simpleweather.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private var _bind :ActivityMainBinding ?= null
+    private var _bind: ActivityMainBinding? = null
     private val bind get() = _bind!!
 
 
@@ -40,56 +48,100 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    private val locationPermission =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+            if (it.values.contains(false)) {
+                permissionCancel()
+            } else {
+                getLocation()
+            }
+        }
+
     private val viewModel by viewModels<MainViewModel>()
-    private lateinit var navController: NavController
-    private lateinit var sp:SharedPreferences
+    lateinit var navController: NavController
+    private lateinit var sp: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         window.decorView.disableAutoFill()
         super.onCreate(savedInstanceState)
         _bind = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bind.root)
         setupSystemBar()
-        sp = getSharedPreferences(FIRST_ACTION, MODE_PRIVATE)
-        val isFirst = sp.getBoolean(FIRST_ACTION_IS_FIRST,true)
-        if(isFirst){
-            viewModel.firstAction()
-        }
-
-        val navHost = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navHost =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navController = navHost.findNavController()
+        initApp()
 
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
-            it.forEach { map->
-                if(!map.value){
-                    Toast.makeText(this, "${map.key}未获取权限", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }.launch(
-            //okhttp缓存
-            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        )
-
-        lifecycleScope.launch {
-            //如果没有一个城市就直接到城市管理界面
-            if(viewModel.getCityCount() <= 0){
-                navController.navigate(R.id.cityFragment)
-            }
-        }
-        lifecycleScope.launch{
-            Log.d("TAG", "onCreate: ${service.getWeather("113.3869","34.53704")}")
-        }
     }
-    @Inject
-    lateinit var service: WeatherService
 
-    fun setupSystemBar() {
+    private fun setupSystemBar() {
         if (!isInMultiWindow) {
             fullScreen()
         }
         if (resources.configuration.isNightModeActive) {
             setLightStatusBar(false)
-        } else{
+        } else {
             setLightStatusBar(true)
+        }
+    }
+
+    private fun initApp() {
+        sp = getSharedPreferences(FIRST_ACTION, MODE_PRIVATE)
+        val isFirst = sp.getBoolean(FIRST_ACTION_IS_FIRST, true)
+        if (isFirst) viewModel.firstAction()
+        locationPermission.launch(
+            arrayOf(
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+            )
+        )
+    }
+
+    private fun getLocation() {
+        val locationProvider = getLocationProvider()
+        if (locationProvider.isNotBlank()) {
+            (getSystemService(Context.LOCATION_SERVICE) as LocationManager).getLocation(
+                this@MainActivity, locationProvider
+            ) {
+                if (it == null) {
+                    permissionCancel()
+                } else {
+                    lifecycleScope.launch {
+                        if (viewModel.addLocation(it)) {
+                            runOnUI { permissionCancel() }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun permissionCancel() {
+        val navOptions = NavOptions.Builder()
+            .setPopUpTo(R.id.homeFragment,true).build()
+        navController.navigate(R.id.cityFragment, Bundle(),navOptions)
+    }
+
+    private fun getLocationProvider(): String {
+        val locationManager =
+            getSystemService(Context.LOCATION_SERVICE) as LocationManager?
+        val providers = locationManager?.getProviders(true) ?: arrayListOf()
+        if (providers.isEmpty()) {
+            toastOnUi("没有可用的位置信息")
+        }
+        return when {
+            providers.contains(LocationManager.NETWORK_PROVIDER) -> {
+                //如果是Network
+                LocationManager.NETWORK_PROVIDER
+            }
+            providers.contains(LocationManager.GPS_PROVIDER) -> {
+                //如果是GPS
+                LocationManager.GPS_PROVIDER
+            }
+            else -> {
+                longToastOnUi("没有可用的位置提供器")
+                ""
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.hua.simpleweather
 
 import android.app.Application
+import android.content.Context
 import dagger.hilt.android.HiltAndroidApp
 
 /**

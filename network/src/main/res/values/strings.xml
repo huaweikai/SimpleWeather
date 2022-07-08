@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="base_network_description_data_is_null_error">返回数据为空</string>
+    <string name="base_network_description_unknown_error">未知错误</string>
+    <string name="base_network_description_connection_error">网络连接失败</string>
+    <string name="base_network_description_timeout_error">请求超时，请重试</string>
+    <string name="base_network_description_http_status_error">与服务器连接异常</string>
+    <string name="base_network_description_request_error">请求参数有误</string>
+    <string name="base_network_description_user_is_null">用户不存在</string>
+</resources>

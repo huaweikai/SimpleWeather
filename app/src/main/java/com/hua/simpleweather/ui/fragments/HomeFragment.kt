@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.ColorUtils
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -17,18 +18,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.palette.graphics.Palette
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.hua.network.Contacts.CITY_TO_HOME
+import com.hua.resource.getDayBg
+import com.hua.resource.getSkyBg
 import com.hua.simpleweather.ActionEvent
 import com.hua.simpleweather.R
 import com.hua.simpleweather.base.BaseFragment
 import com.hua.simpleweather.databinding.FragmentHomeBinding
-import com.hua.simpleweather.other.Contacts.CITY_TO_HOME
-import com.hua.simpleweather.other.getSky
 import com.hua.simpleweather.ui.adapter.WeatherViewPagerAdapter
 import com.hua.simpleweather.ui.viewmodels.MainViewModel
-import com.hua.simpleweather.utils.dp
-import com.hua.simpleweather.utils.dpToPx
-import com.hua.simpleweather.utils.setLightStatusBar
-import com.hua.simpleweather.utils.toast
+import com.hua.simpleweather.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -84,20 +83,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun initView() {
         var isFirst = true
         val position = arguments?.getInt(CITY_TO_HOME, 0) ?: 0
-        val adapter = WeatherViewPagerAdapter(onclick = {
-            //直接去城市管理
-            findNavController().navigate(R.id.cityFragment)
-        }, onRefresh = {
-            //下拉刷新
-            //将刷新的控件id传递，去viewmodel调用刷新
-            swip = it
-            viewModel.reFreshWeather()
-        }, attachToWindow = {
-            homeHandler.removeCallbacksAndMessages(null)
-            homeHandler.postDelayed({
-                setSystemStatus(it)
-            }, 500L)
-        })
+        val adapter =
+            WeatherViewPagerAdapter(requireActivity() as AppCompatActivity, attachToWindow = {
+                homeHandler.removeCallbacksAndMessages(null)
+                homeHandler.postDelayed({
+                    setSystemStatus(
+                        getSkyBg(requireActivity().isDarkMode(), it)
+                    )
+                },500L)
+            }, swipRefresh = {
+                swip = it
+                viewModel.reFreshWeather(true)
+            })
 
         bind.homeViewpager.adapter = adapter
 

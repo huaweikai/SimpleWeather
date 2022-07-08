@@ -2,4 +2,16 @@
     <string name="app_name">SimpleWeather</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sky_text">%s,体感%d°C</string>
+    <string name="update_time">更新于 %s:%s</string>
+    <string name="hour_update_time">%s:%s</string>
+    <string name="string_atrso">日出日落</string>
+    <string name="sun_up_time">日出 %d:%d</string>
+    <string name="sun_down_time">日落 %d:%d</string>
+    <string name="sky_aqi_desc">空气质量 - %s</string>
+    <string name="sky_temp_now">%d°</string>
+    <string name="hour_sky_temp">%d°</string>
+    <string name="item_hour_title">小时预览</string>
+    <string name="hour_rain_percent">%s%%</string>
+    <string name="hour_wind_level">%d 级</string>
 </resources>

@@ -8,14 +8,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
+import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.hua.network.Contacts.CITY_TO_HOME
 import com.hua.simpleweather.R
 import com.hua.simpleweather.base.BaseFragment
 import com.hua.simpleweather.databinding.FragmentCityBinding
-import com.hua.simpleweather.other.Contacts.CITY_TO_HOME
 import com.hua.simpleweather.ui.adapter.CityAdapter
 import com.hua.simpleweather.ui.viewmodels.MainViewModel
 import com.hua.simpleweather.utils.dp
@@ -26,12 +28,14 @@ import kotlinx.coroutines.launch
 class CityFragment : BaseFragment<FragmentCityBinding>() {
 
     private val viewModel by activityViewModels<MainViewModel>()
+    private var sortedCity = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         initViewBind(FragmentCityBinding.inflate(layoutInflater))
+        sortedCity = false
         return bind.root
     }
 
@@ -42,7 +46,7 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
             findNavController().navigate(R.id.action_cityFragment_to_addCityFragment)
         }
         val adapter = CityAdapter(
-           onDeleteClick =  {
+            onDeleteClick = {
                 //点到了删除按钮
                 viewModel.deleteWeatherBean(it)
             },
@@ -51,10 +55,14 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
                 Bundle().also {
                     it.putInt(CITY_TO_HOME, position)
                     val options = NavOptions.Builder()
-                        .setPopUpTo(R.id.cityFragment,true)
+                        .setPopUpTo(R.id.cityFragment, true)
                         .setLaunchSingleTop(true)
                         .build()
-                    findNavController().navigate(R.id.action_cityFragment_to_homeFragment, it,options)
+                    findNavController().navigate(
+                        R.id.action_cityFragment_to_homeFragment,
+                        it,
+                        options
+                    )
                 }
             },
             onLongClick = {
@@ -68,8 +76,8 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
         }
         bind.cityRv.apply {
             this.adapter = adapter
-            this.layoutManager = GridLayoutManager(requireContext(), 2)
-            this.addItemDecoration(object :RecyclerView.ItemDecoration(){
+            this.layoutManager = LinearLayoutManager(requireContext())
+            this.addItemDecoration(object : RecyclerView.ItemDecoration() {
                 override fun getItemOffsets(
                     outRect: Rect,
                     view: View,
@@ -77,20 +85,22 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
                     state: RecyclerView.State
                 ) {
                     outRect.bottom = 20.dp
-                    outRect.left = 12.dp
-//                    outRect.right = 6.dp
+                    outRect.left = 16.dp
+                    outRect.right = 16.dp
                 }
             })
         }
 
-        val helper = ItemTouchHelper(object :ItemTouchHelper.Callback(){
+        val helper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
             override fun getMovementFlags(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder
             ): Int {
-                val dragFlag = ItemTouchHelper.UP or ItemTouchHelper.DOWN or
-                        ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-                return makeMovementFlags(dragFlag,0)
+                if (viewHolder.adapterPosition != 0) {
+                    val dragFlag = ItemTouchHelper.UP or ItemTouchHelper.DOWN
+                    return makeMovementFlags(dragFlag, 0)
+                }
+                return makeMovementFlags(0, 0)
             }
 
             override fun onMove(
@@ -98,8 +108,11 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
             ): Boolean {
-                viewModel.updateCity(viewHolder.adapterPosition,target.adapterPosition){
-                    adapter.submitList(it)
+                if (target.adapterPosition != 0){
+                    viewModel.updateCity(viewHolder.adapterPosition, target.adapterPosition) {
+                        sortedCity = true
+                        adapter.submitList(it)
+                    }
                 }
                 return true
             }
@@ -107,14 +120,13 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 
             }
-        }
-        )
+        })
         helper.attachToRecyclerView(bind.cityRv)
 
         bind.cityOk.setOnClickListener {
-            if(adapter.isDeleteTime){
+            if (adapter.isDeleteTime) {
                 bind.cityOk.setImageResource(R.drawable.ic_more)
-            }else{
+            } else {
                 bind.cityOk.setImageResource(R.drawable.ic_check)
             }
             adapter.isDeleteTime = !adapter.isDeleteTime
@@ -127,7 +139,10 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
 
     override fun onStop() {
         super.onStop()
-        viewModel.replaceWeatherSort()
+        if(sortedCity){
+            viewModel.replaceWeatherSort()
+        }
+
     }
 
 }

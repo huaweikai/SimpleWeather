@@ -2,15 +2,17 @@ package com.hua.simpleweather.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
-import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.hua.simpleweather.db.dao.bean.WeatherBean
+import coil.load
+import coil.size.Scale
+import com.hua.model.weather.WeatherVO
+import com.hua.resource.getSkyBg
+import com.hua.resource.getSkyName
 import com.hua.simpleweather.databinding.ItemCityBinding
-import com.hua.simpleweather.other.getSky
 import com.hua.simpleweather.utils.dp
+import com.hua.simpleweather.utils.isDarkMode
 import kotlin.math.roundToInt
 
 /**
@@ -19,16 +21,16 @@ import kotlin.math.roundToInt
  * @Desc   : adapter
  */
 class CityAdapter(
-    private val onDeleteClick:(weatherBean: WeatherBean)->Unit,
+    private val onDeleteClick:(weatherPO: WeatherVO)->Unit,
     private val onclick:(Int)->Unit,
     private val onLongClick:()->Unit
-):ListAdapter<WeatherBean,CityAdapter.VHolder>(
-    object :DiffUtil.ItemCallback<WeatherBean>(){
-        override fun areItemsTheSame(oldItem: WeatherBean, newItem: WeatherBean): Boolean {
+):ListAdapter<WeatherVO,CityAdapter.VHolder>(
+    object :DiffUtil.ItemCallback<WeatherVO>(){
+        override fun areItemsTheSame(oldItem: WeatherVO, newItem: WeatherVO): Boolean {
             return oldItem.address == newItem.address
         }
 
-        override fun areContentsTheSame(oldItem: WeatherBean, newItem: WeatherBean): Boolean {
+        override fun areContentsTheSame(oldItem: WeatherVO, newItem: WeatherVO): Boolean {
             return oldItem == newItem
         }
     }
@@ -47,9 +49,7 @@ class CityAdapter(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            ).apply {
-                cityCard.layoutParams = ViewGroup.LayoutParams((width/20)*9, 150.dp)
-            }
+            )
         ).apply {
             bind.root.isClickable = !isDeleteTime
             bind.cityDelete.setOnClickListener {
@@ -71,17 +71,24 @@ class CityAdapter(
     override fun onBindViewHolder(holder: VHolder, position: Int) {
         val data = getItem(position)
         holder.bind.apply {
-            cityBg.setBackgroundResource(
-                getSky(data.realtime_skyIcon).bg
-            )
+            cityBg.load(getSkyBg(this.root.context.isDarkMode(),data.result.realtime.skycon))
             cityName.text = data.cityName
-            val temp = "${data.realtime_temperature.roundToInt()} °C"
+            val temp = "${data.result.realtime.temperature.roundToInt()}°"
             cityTemp.text = temp
-            cityWeatherDesc.text = getSky(data.realtime_skyIcon).info
-
-            cityDelete.isVisible = isDeleteTime
-
-
+            cityWeatherDesc.text = getSkyName(data.result.realtime.skycon)
         }
+//        holder.bind.apply {
+//            cityBg.setBackgroundResource(
+//                getSky(data.realtime_skyIcon).bg
+//            )
+//            cityName.text = data.cityName
+//            val temp = "${data.realtime_temperature.roundToInt()} °C"
+//            cityTemp.text = temp
+//            cityWeatherDesc.text = getSky(data.realtime_skyIcon).info
+//
+//            cityDelete.isVisible = isDeleteTime
+//
+//
+//        }
     }
 }

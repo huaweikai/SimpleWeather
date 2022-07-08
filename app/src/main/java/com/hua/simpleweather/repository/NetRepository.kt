@@ -1,17 +1,10 @@
 package com.hua.simpleweather.repository
 
-import android.util.Log
-import com.hua.simpleweather.db.dao.bean.WeatherBean
 import com.hua.simpleweather.db.dao.WeatherDao
-import com.hua.simpleweather.network.bean.Weather
-import com.hua.simpleweather.network.interfaces.WeatherService
-import com.hua.simpleweather.other.WeatherToWeatherBean
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import com.hua.network.api.WeatherService
+import com.hua.model.weather.WeatherVO
+import com.hua.network.getOrError
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.withContext
-import java.lang.Exception
 import javax.inject.Inject
 
 /**
@@ -25,53 +18,38 @@ class NetRepository @Inject constructor(
 ) {
 
     //获取天气
-    suspend fun getWeather(lng: String, lat: String, cityName: String
-    ): Weather? {
-        var weather: Weather?
-        withContext(Dispatchers.IO) {
-            weather = try {
-                val realtimeTry = weatherService.runCatching {
-                    return@runCatching this.getRealTimeWeather(lng, lat)
-                }
-                val dailyTry = weatherService.runCatching {
-                    return@runCatching this.getDailyWeather(lng, lat)
-                }
-                val realtimeResponse = realtimeTry.getOrNull()
-                val dailyResponse = dailyTry.getOrNull()
-                if(realtimeResponse?.status == "ok" && dailyResponse?.status == "ok"){
-                    Weather(realtimeResponse, dailyResponse, cityName)
-                }else{
-                    null
-                }
-            } catch (e: Exception) {
-                null
-            }
+    suspend fun getWeather(lng: String, lat: String, cityName: String,id:Int
+    ): WeatherVO? {
+        val weatherVO = weatherService.getWeather(lng, lat).getOrError { null }
+        weatherVO?.let {
+            return it.copy(cityName = cityName, id = id)
         }
-        return weather
+        return null
     }
 
 
-    fun getAllWeather(): Flow<List<WeatherBean>> {
+    fun getAllWeather(): Flow<List<WeatherVO>> {
         return dao.getAllWeather()
     }
 
-    suspend fun selectCityWeather(): List<WeatherBean> {
+    suspend fun selectCityWeather(): List<WeatherVO> {
         return dao.selectCityWeather()
     }
 
+    suspend fun selectLocationWeather(): WeatherVO? {
+        return dao.selectLocationWeather()
+    }
 
     //添加城市
-    suspend fun insertWeather(weather: Weather,id:Int) {
-        val dailyResponse = weather.dailyresponse
-        val realtimeResponse = weather.realtimeresponse
-        if (dailyResponse != null && realtimeResponse != null) {
-            dao.insertWeather(WeatherToWeatherBean.change(weather,id))
-        }
+    suspend fun insertWeather(weather: WeatherVO?) {
+        if(weather == null) return
+        dao.insertWeather(weather)
     }
 
-    suspend fun updateWeather(weatherBean: WeatherBean){
-        dao.insertWeather(weatherBean)
+    suspend fun updateWeather(weatherPO: WeatherVO){
+        dao.insertWeather(weatherPO)
     }
+
 
     //判断要添加的城市是否存在
     suspend fun cityExist(primary: String): Int {
@@ -79,19 +57,23 @@ class NetRepository @Inject constructor(
     }
 
     //删除城市
-    suspend fun deleteCity(weatherBean: WeatherBean){
-        return dao.deleteCity(weatherBean)
+    suspend fun deleteCity(weatherPO: WeatherVO){
+        return dao.deleteCity(weatherPO)
     }
     //获取城市数量
     suspend fun getCityCount():Int{
         return dao.getCityCount()
     }
 
-    suspend fun updateCityCount(list: List<WeatherBean>){
+    suspend fun updateCityCount(list: List<WeatherVO>){
         dao.updateCity(
-            list.mapIndexed { index, weatherBean ->
-                weatherBean.copy(id = index)
+            list.filter { it.id!=0 }.mapIndexed { index, weatherVO ->
+                weatherVO.copy(id = index + 1)
             }
         )
+    }
+
+    suspend fun selectWeather(lng: String,lat: String):WeatherVO?{
+        return weatherService.getWeather(lng, lat).getOrError { null }
     }
 }

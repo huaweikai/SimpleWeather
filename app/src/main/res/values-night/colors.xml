@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="search_bg_color">#72787e</color>
+    <color name="on_back_ground">#FFFFFFFF</color>
 </resources>

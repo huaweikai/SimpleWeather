@@ -11,6 +11,9 @@ import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.ColorInt
+import androidx.viewbinding.ViewBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * @author : huaweikai
@@ -30,6 +33,8 @@ val Int.dp: Int
     }
 fun Int.dpToPx(context:Context) = (this * context.resources.displayMetrics.density) + 0.5f
 
+fun Int.valueToPx(context: Context) = this * (context.resources.displayMetrics.densityDpi / 160f)
+
 
 fun View.disableAutoFill() = run {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -37,20 +42,6 @@ fun View.disableAutoFill() = run {
     }
 }
 
-fun Activity.fullScreen() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-        window.setDecorFitsSystemWindows(true)
-    }
-    @Suppress("DEPRECATION")
-    window.decorView.systemUiVisibility =
-        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-    @Suppress("DEPRECATION")
-    window.clearFlags(
-        WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-                or WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION
-    )
-    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-}
 
 
 ///**
@@ -74,32 +65,21 @@ fun Activity.fullScreen() {
 //    setLightStatusBar(isLightBar)
 //}
 
-fun Activity.setLightStatusBar(isLightBar: Boolean) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-        window.insetsController?.let {
-            if (isLightBar) {
-                it.setSystemBarsAppearance(
-                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
-                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
-                )
-            } else {
-                it.setSystemBarsAppearance(
-                    0,
-                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
-                )
-            }
-        }
-    }
-    @Suppress("DEPRECATION")
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        val decorView = window.decorView
-        val systemUiVisibility = decorView.systemUiVisibility
-        if (isLightBar) {
-            decorView.systemUiVisibility =
-                systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        } else {
-            decorView.systemUiVisibility =
-                systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
-        }
+
+fun ViewBinding.getString(resId: Int, vararg formatString: Any): String {
+    return this.root.resources.getString(resId, *formatString)
+}
+
+val calendar = Calendar.getInstance()
+
+val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.CHINA)
+
+val resultDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm+08:00", Locale.CHINA)
+
+fun Int.toTime():String{
+    return if(this < 10){
+        "0$this"
+    }else{
+        this.toString()
     }
 }
