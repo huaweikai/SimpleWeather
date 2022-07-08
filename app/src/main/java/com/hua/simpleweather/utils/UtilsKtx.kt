@@ -35,6 +35,15 @@ fun Int.dpToPx(context:Context) = (this * context.resources.displayMetrics.densi
 
 fun Int.valueToPx(context: Context) = this * (context.resources.displayMetrics.densityDpi / 160f)
 
+val Int.sp: Float
+    get() {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_SP,
+            this.toFloat(),
+            Resources.getSystem().displayMetrics
+        )
+    }
+
 
 fun View.disableAutoFill() = run {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

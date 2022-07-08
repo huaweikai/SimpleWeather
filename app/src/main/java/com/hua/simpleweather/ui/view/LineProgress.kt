@@ -25,7 +25,7 @@ class LineProgress @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         canvas?.let {
-
+            it.drawLine(0f,0f,width.toFloat(),height.toFloat(),linePaint)
         }
     }
 }
