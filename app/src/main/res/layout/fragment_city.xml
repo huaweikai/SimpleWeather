@@ -1,29 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/city_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="40dp"
-        android:text="城市管理"
-        android:textSize="30sp" />
+<!--    <TextView-->
+<!--            android:id="@+id/city_desc"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="20dp"-->
+<!--            android:layout_marginTop="42dp"-->
+<!--            android:text="城市管理" />-->
+    <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/city_desc"
+            style="@style/Widget.Material3.CollapsingToolbar.Large"
+            app:title="城市管理"
+            app:titleTextAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+            app:navigationIcon="@drawable/ic_back"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbarStyle="insideInset" />
 
     <SearchView
-        android:id="@+id/city_search"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@id/city_desc"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/background"
-        android:queryBackground="@null" />
+            android:id="@+id/city_search"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/city_desc"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/background"
+            android:queryBackground="@null" />
 
     <ImageView
         android:id="@+id/city_ok"
@@ -37,12 +47,12 @@
         android:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/city_rv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/city_ok"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp" />
+            android:id="@+id/city_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/city_ok"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp" />
 
 
 </RelativeLayout>

@@ -11,6 +11,7 @@ import androidx.annotation.ColorInt
 import com.hua.simpleweather.utils.dp
 import com.hua.simpleweather.utils.sp
 import kotlin.math.max
+import kotlin.math.min
 
 
 class CircleProgressView @JvmOverloads constructor(
@@ -43,9 +44,18 @@ class CircleProgressView @JvmOverloads constructor(
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val widthMode = MeasureSpec.getMode(widthMeasureSpec)
         val heightMode = MeasureSpec.getMode(heightMeasureSpec)
-        val widthSize = if(widthMode == MeasureSpec.EXACTLY) MeasureSpec.getSize(widthMeasureSpec) else 75.dp
-        val heightSize = if(heightMode == MeasureSpec.EXACTLY) MeasureSpec.getSize(heightMeasureSpec) else 75.dp
-        val size = max(widthSize,heightSize)
+//        var widthSize = MeasureSpec.getSize(widthMeasureSpec)
+//        var heightSize = MeasureSpec.getSize(heightMeasureSpec)
+//        if (widthMode == MeasureSpec.AT_MOST){
+//            widthSize = 150
+//        }
+//        if (heightMode== MeasureSpec.AT_MOST){
+//            heightSize = 150
+//        }
+//        val size = min(widthSize,heightSize)
+        val widthSize = if(widthMode == MeasureSpec.EXACTLY) MeasureSpec.getSize(widthMeasureSpec) else 100.dp
+        val heightSize = if(heightMode == MeasureSpec.EXACTLY) MeasureSpec.getSize(heightMeasureSpec) else 100.dp
+        val size = min(widthSize,heightSize)
         setMeasuredDimension(size,size)
     }
 

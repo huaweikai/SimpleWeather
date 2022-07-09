@@ -30,7 +30,9 @@ class WarnFragment:BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _bind = FragementWarnBinding.inflate(layoutInflater)
-        return bind.root
+        return bind.root.apply {
+            setBackgroundColor( if (context?.isDarkMode() == true) Color.BLACK else Color.WHITE)
+        }
     }
     private var alert:WeatherVO.Result.Alert ?= null
     private val adapter = AlertAdapter()
@@ -50,9 +52,6 @@ class WarnFragment:BottomSheetDialogFragment() {
             skipCollapsed = true
             state = BottomSheetBehavior.STATE_EXPANDED
         }
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(
-            if (context?.isDarkMode() == true) Color.BLACK else Color.WHITE
-        ))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

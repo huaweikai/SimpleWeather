@@ -1,5 +1,7 @@
 package com.hua.simpleweather.ui.fragments
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -7,13 +9,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavDestination
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.hua.network.Contacts.CITY_TO_HOME
 import com.hua.simpleweather.ActionEvent.*
+import com.hua.simpleweather.R
 import com.hua.simpleweather.base.BaseFragment
 import com.hua.simpleweather.databinding.FragmentAddCityBinding
+import com.hua.simpleweather.db.dao.bean.LocalCity
 import com.hua.simpleweather.ui.adapter.AddCityAdapter
+import com.hua.simpleweather.ui.adapter.ModuleItemDecoration
 import com.hua.simpleweather.ui.viewmodels.AddCityViewModel
 import com.hua.simpleweather.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,7 +46,7 @@ class AddCityFragment : BaseFragment<FragmentAddCityBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val adapter = AddCityAdapter{
-            viewModel.addCity(it)
+            showDiaLog(it)
         }
         val watch = object :TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -46,11 +55,15 @@ class AddCityFragment : BaseFragment<FragmentAddCityBinding>() {
                 viewModel.searchPlace(s.toString())
             }
         }
-        bind.addcityEd.addTextChangedListener(watch)
+        bind.addCityEd.addTextChangedListener(watch)
+        bind.addCityToolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
 
         bind.addrv.apply {
             this.adapter = adapter
             this.layoutManager = LinearLayoutManager(requireContext())
+            this.addItemDecoration(ModuleItemDecoration())
         }
 
 
@@ -70,10 +83,29 @@ class AddCityFragment : BaseFragment<FragmentAddCityBinding>() {
             viewModel.addEvent.collect {
                 when(it){
                     is Error-> it.message.toast(requireContext())
-                    is Success -> "添加成功".toast(requireContext())
+                    is Success -> {
+                        "添加成功".toast(requireContext())
+                        findNavController().navigate(R.id.action_addCityFragment_to_homeFragment,
+                        Bundle().apply
+                         {
+                             putInt(CITY_TO_HOME,-1)
+                         })
+                    }
                     else->{}
                 }
             }
+        }
+    }
+
+    private fun showDiaLog(city:LocalCity){
+        AlertDialog.Builder(requireContext()).apply {
+            setTitle("添加城市")
+            setMessage("确认添加 ${city.cityName}吗")
+            setPositiveButton("确定"
+            ) { dialog, which -> viewModel.addCity(city) }
+            setNegativeButton("取消"
+            ) { dialog, which ->  }
+            create().show()
         }
     }
 }

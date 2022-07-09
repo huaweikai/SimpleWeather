@@ -48,7 +48,7 @@ class AddCityViewModel @Inject constructor(
         viewModelScope.launch {
             val primary = localCity.lng + localCity.lat
             //用于排序使用
-            val num = netRepository.getCityCount()
+            val num = netRepository.selectNoLocationCount()
             if(netRepository.cityExist(primary) == 0){
                 val weather = netRepository.getWeather(localCity.lng,localCity.lat,localCity.cityName,num+1)
                 if(weather != null){

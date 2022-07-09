@@ -59,12 +59,15 @@ fun getWarnDec(
 @ColorInt
 private val ORANGE = -0x5b00
 
+@ColorInt
+private val YELLOW = -0x42de8
+
 fun getWarnColor(
     code: Int
 ):Int{
     return when(code % 100){
         1-> Color.BLUE
-        2->Color.YELLOW
+        2->YELLOW
         3-> ORANGE
         else -> Color.RED
     }

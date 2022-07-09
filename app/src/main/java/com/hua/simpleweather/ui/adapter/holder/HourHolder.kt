@@ -56,7 +56,7 @@ class HourHolder(
                     R.string.hour_rain_percent,
                     data.precipitation[position].value.toFloat().roundToInt()
                 )
-                getSkyIcon(data.skyIcon[position].value)?.let { rvHourSkyIcon.setImageResource(it) }
+                getSkyIcon(data.skyIcon[position].value).let { rvHourSkyIcon.setImageResource(it) }
                 rvHourTemp.text = getString(
                     R.string.hour_sky_temp,
                     data.temperature[position].value.toFloat().roundToInt()

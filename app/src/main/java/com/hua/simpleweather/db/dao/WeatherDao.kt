@@ -18,6 +18,9 @@ interface WeatherDao {
     @Query("select count(*) from weather")
     suspend fun getCityCount():Int
 
+    @Query("select count(*) from weather where id > 0")
+    suspend fun selectNoLocationCount():Int
+
     @Query("select * from weather order by id")
     fun getAllWeather(): Flow<List<WeatherVO>>
 //    fun getAllWeather():LiveData<List<WeatherBean>>

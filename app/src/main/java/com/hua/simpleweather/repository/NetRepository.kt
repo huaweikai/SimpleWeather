@@ -65,6 +65,10 @@ class NetRepository @Inject constructor(
         return dao.getCityCount()
     }
 
+    suspend fun selectNoLocationCount():Int{
+        return dao.selectNoLocationCount()
+    }
+
     suspend fun updateCityCount(list: List<WeatherVO>){
         dao.updateCity(
             list.filter { it.id!=0 }.mapIndexed { index, weatherVO ->

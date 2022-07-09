@@ -2,12 +2,15 @@ package com.hua.simpleweather.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.graphics.ColorUtils
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.hua.simpleweather.R
 import com.hua.simpleweather.db.dao.bean.LocalCity
 import com.hua.simpleweather.databinding.ItemAddCityBinding
+import com.hua.simpleweather.utils.LocationUtils
+import com.hua.simpleweather.utils.getString
 
 /**
  * @author : huaweikai
@@ -38,6 +41,7 @@ class AddCityAdapter(
 
     class VHolder(val bind:ItemAddCityBinding):RecyclerView.ViewHolder(bind.root)
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VHolder {
         val holder = VHolder(
             ItemAddCityBinding.inflate(
@@ -46,7 +50,7 @@ class AddCityAdapter(
                 false
             )
         ).apply {
-            bind.addcityAddIv.setOnClickListener {
+            bind.root.setOnClickListener {
                 onclick(getItem(adapterPosition))
             }
         }
@@ -55,13 +59,23 @@ class AddCityAdapter(
 
     override fun onBindViewHolder(holder: VHolder, position: Int) {
         val data = getItem(position)
+//        val address = LocationUtils.getAddress(holder.bind.root.context,data.lng.toDouble(),data.lat.toDouble())
         holder.bind.apply {
-            val address = data.cityName
-            addcityName.text = address
+            addCityName.text = data.cityName
+            addCityLatLng.text = getString(
+                R.string.addcity_location,
+                data.lng,
+                data.lat
+            )
             val lngLat = data.lng + data.lat
             if(lngLat in localList){
-                addcityAddIv.setImageResource(R.drawable.ic_added)
-                addcityAddIv.isClickable = false
+                val color = ColorUtils.setAlphaComponent(
+                    addCityName.currentTextColor,
+                    (0.3 * 255).toInt()
+                )
+                citycard.isClickable = false
+                addCityName.setTextColor(color)
+                addCityLatLng.setTextColor(color)
             }
         }
     }

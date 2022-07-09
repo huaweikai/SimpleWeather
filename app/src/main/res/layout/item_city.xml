@@ -28,49 +28,79 @@
 
         <TextView
                 android:id="@+id/city_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                style="@style/TextAppearance.Material3.BodyMedium"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:maxLines="1"
+                android:ellipsize="end"
                 tools:text="北京市"
                 app:layout_constraintTop_toBottomOf="@+id/city_bg"
                 app:layout_constraintBottom_toTopOf="@+id/city_weather_desc"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="16dp" />
+                app:layout_constraintStart_toEndOf="@+id/city_isLocation"
+                app:layout_constraintEnd_toStartOf="@+id/city_temp"
+                android:layout_marginEnd="8dp" />
 
         <TextView
                 android:id="@+id/city_temp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_marginEnd="16dp"
                 android:textColor="@color/white"
-                tools:textColor="@color/black"
-                style="@style/TextAppearance.Material3.TitleLarge"
+                style="@style/TextAppearance.Material3.HeadlineMedium"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 tools:text="18°"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/city_delete"
+                android:layout_marginEnd="16dp" />
 
         <TextView
                 android:id="@+id/city_weather_desc"
                 android:layout_width="wrap_content"
-                android:layout_height="18dp"
+                android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textColor="@color/white"
-                android:textSize="14sp"
+                style="@style/TextAppearance.Material3.BodyMedium"
                 tools:text="晴"
                 app:layout_constraintTop_toBottomOf="@+id/city_name"
                 app:layout_constraintBottom_toTopOf="@+id/city_bg"
                 android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="@+id/city_name" />
+                app:layout_constraintStart_toEndOf="@+id/city_drag"
+                android:layout_marginStart="8dp" />
+
+        <ImageView
+                android:id="@+id/city_delete"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center|end"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_delete"
+                app:layout_constraintEnd_toEndOf="@+id/city_bg"
+                app:layout_constraintBottom_toBottomOf="@+id/city_temp"
+                app:layout_constraintTop_toTopOf="@+id/city_temp"
+                android:layout_marginEnd="16dp" />
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_city_drag"
+                android:id="@+id/city_drag"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="16dp"
+                android:visibility="gone" />
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_city_location"
+                android:id="@+id/city_isLocation"
+                app:layout_constraintBottom_toBottomOf="@+id/city_name"
+                app:layout_constraintTop_toTopOf="@+id/city_name"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@+id/city_weather_desc" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ImageView
-        android:id="@+id/city_delete"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_gravity="center|end"
-        android:visibility="gone"
-        app:srcCompat="@drawable/ic_delete" />
+
 </com.google.android.material.card.MaterialCardView>

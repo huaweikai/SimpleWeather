@@ -75,6 +75,7 @@ class DetailDescAdapter(
     override fun onBindViewHolder(holder: BaseViewHolder<ItemDetailBinding>, position: Int) {
         holder.bind.apply {
             itemDetailIcon.setImageResource(getDetailIcon(listType[position]))
+            itemDetailIcon.setColorFilter(colorData.primaryColor)
             itemDetailTitle.text = getDetailTile(listType[position])
             itemDetailDesc.setTextColor(colorData.containerColor)
             itemDetailDesc.text = getDetailSubTile(listType[position],data)

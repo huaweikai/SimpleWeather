@@ -1,38 +1,23 @@
 package com.hua.simpleweather.ui.adapter
 
-import android.animation.Animator
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.util.TypedValue
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.AttrRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.ColorUtils
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.hua.material.materialcolor.ColorContainerData
 import com.hua.material.materialcolor.PaletteUtils
 import com.hua.model.weather.WeatherVO
 import com.hua.resource.getSkyBg
-import com.hua.resource.getSkyName
 import com.hua.simpleweather.MainActivity
 import com.hua.simpleweather.R
 import com.hua.simpleweather.databinding.*
-import com.hua.simpleweather.db.dao.bean.WeatherPO
 import com.hua.simpleweather.ui.adapter.holder.*
 import com.hua.simpleweather.ui.fragments.WarnFragment
 import com.hua.simpleweather.utils.isDarkMode
-import kotlinx.coroutines.launch
-import java.io.ByteArrayInputStream
 
 
 class WeatherModuleAdapter(
@@ -41,10 +26,11 @@ class WeatherModuleAdapter(
 ) : RecyclerView.Adapter<AbstractMainHolder>() {
 
     private val typeList = arrayListOf(
-        ViewTye.ViewTypeNow, ViewTye.ViewTypeRealTime,
-        ViewTye.ViewTypeHour, ViewTye.ViewTypeSun,
-        ViewTye.ViewTypeDetail,
-        ViewTye.ViewTypeAbout
+        ViewType.ViewTypeNow, ViewType.ViewTypeRealTime,
+        ViewType.ViewTypeHour, ViewType.ViewTypeSun,
+        ViewType.ViewTypeAirDetail,
+        ViewType.ViewTypeDetail,
+        ViewType.ViewTypeAbout
     )
 
     override fun getItemViewType(position: Int): Int {
@@ -55,9 +41,9 @@ class WeatherModuleAdapter(
 
     init {
         if (data.result.alert.content.isNotEmpty()) {
-            typeList.add(1, ViewTye.ViewTypeWarn)
+            typeList.add(1, ViewType.ViewTypeWarn)
         } else {
-            if (typeList.contains(ViewTye.ViewTypeWarn)) {
+            if (typeList.contains(ViewType.ViewTypeWarn)) {
                 typeList.removeAt(1)
             }
         }
@@ -88,7 +74,7 @@ class WeatherModuleAdapter(
             )
         }
         return when (viewType) {
-            ViewTye.ViewTypeNow.type -> {
+            ViewType.ViewTypeNow.type -> {
                 NowHolder(
                     ItemNowCardBinding.inflate(
                         layoutInflater, parent, false
@@ -99,7 +85,7 @@ class WeatherModuleAdapter(
                     }
                 }
             }
-            ViewTye.ViewTypeRealTime.type -> {
+            ViewType.ViewTypeRealTime.type -> {
                 DayKeypointHolder(
                     ItemRealtimeSurveyCardBinding.inflate(
                         layoutInflater,
@@ -108,13 +94,13 @@ class WeatherModuleAdapter(
                     ),color
                 )
             }
-            ViewTye.ViewTypeHour.type -> {
+            ViewType.ViewTypeHour.type -> {
                 HourHolder(ItemHourCardBinding.inflate(layoutInflater, parent, false),color)
             }
-            ViewTye.ViewTypeSun.type -> {
+            ViewType.ViewTypeSun.type -> {
                 AstroHolder(ItemAtrsoCardBinding.inflate(layoutInflater, parent, false),color)
             }
-            ViewTye.ViewTypeWarn.type -> {
+            ViewType.ViewTypeWarn.type -> {
                 WarnHolder(ItemWarningCardBinding.inflate(layoutInflater, parent, false),color).apply {
                     itemView.setOnClickListener {
                         activity.supportFragmentManager.also {
@@ -126,8 +112,11 @@ class WeatherModuleAdapter(
                     }
                 }
             }
-            ViewTye.ViewTypeDetail.type->{
+            ViewType.ViewTypeDetail.type->{
                 DetailHolder(ItemRealtimeDetailCardBinding.inflate(layoutInflater,parent,false),color)
+            }
+            ViewType.ViewTypeAirDetail.type->{
+                AirHolder(ItemAirCardBinding.inflate(layoutInflater,parent,false),color)
             }
             else -> {
                 AboutHolder(
@@ -166,12 +155,13 @@ fun decodeBitmap(@AttrRes id: Int, context: Context): Bitmap {
     return BitmapFactory.decodeResource(context.resources, id, bitmapOption)
 }
 
-sealed class ViewTye(val type: Int) {
-    object ViewTypeNow : ViewTye(1)
-    object ViewTypeWarn : ViewTye(2)
-    object ViewTypeRealTime : ViewTye(3)
-    object ViewTypeHour : ViewTye(4)
-    object ViewTypeSun : ViewTye(5)
-    object ViewTypeDetail:ViewTye(6)
-    object ViewTypeAbout : ViewTye(7)
+sealed class ViewType(val type: Int) {
+    object ViewTypeNow : ViewType(1)
+    object ViewTypeWarn : ViewType(2)
+    object ViewTypeRealTime : ViewType(3)
+    object ViewTypeHour : ViewType(4)
+    object ViewTypeSun : ViewType(5)
+    object ViewTypeAirDetail:ViewType(6)
+    object ViewTypeDetail:ViewType(7)
+    object ViewTypeAbout : ViewType(8)
 }

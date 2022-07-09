@@ -14,16 +14,27 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-                android:id="@+id/item_warn_icon"
-                tools:srcCompat="@drawable/ic_warn_dense_fog"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+        <androidx.cardview.widget.CardView
+                android:id="@+id/item_warn_icon_outer"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 app:layout_constraintStart_toStartOf="@id/item_warn_title"
                 app:layout_constraintTop_toBottomOf="@id/item_warn_title"
                 android:layout_marginTop="8dp"
+                app:cardCornerRadius="18dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="8dp"
+                app:cardBackgroundColor="#FFEB3B">
+
+            <ImageView
+                    android:layout_gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/item_warn_icon"
+                    app:tint="@color/white"
+                    tools:srcCompat="@drawable/ic_warn_dense_fog" />
+        </androidx.cardview.widget.CardView>
+
 
         <TextView
                 android:id="@+id/item_warn_desc"
@@ -34,10 +45,10 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="start|center_vertical"
-                app:layout_constraintStart_toEndOf="@+id/item_warn_icon"
+                app:layout_constraintStart_toEndOf="@+id/item_warn_icon_outer"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="@+id/item_warn_icon"
-                app:layout_constraintTop_toTopOf="@id/item_warn_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/item_warn_icon_outer"
+                app:layout_constraintTop_toTopOf="@id/item_warn_icon_outer"
                 android:layout_marginStart="8dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -4,9 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.location.Address
 import android.location.LocationManager
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.hua.simpleweather.ActionEvent
 import com.hua.simpleweather.db.dao.bean.LocalCity
 import com.hua.network.Contacts.FIRST_ACTION
@@ -44,14 +42,14 @@ class MainViewModel @Inject constructor(
 
     val roomWeatherLiveData = roomWeather.asLiveData(viewModelScope.coroutineContext).value
 
-    var cityList = listOf<WeatherVO>()
+//    var cityList = listOf<WeatherVO>()
 
-    fun selectCityList(
-        updateView: () -> Unit
-    ) {
+    private val _cityListLiveData = MutableLiveData<List<WeatherVO>>()
+    val cityListLiveData: LiveData<List<WeatherVO>> get() = _cityListLiveData
+
+    fun selectCityList() {
         viewModelScope.launch {
-            cityList = netRepository.selectCityWeather()
-            updateView()
+            _cityListLiveData.value = netRepository.selectCityWeather()
         }
     }
 
@@ -63,6 +61,7 @@ class MainViewModel @Inject constructor(
                 reFreshWeather(false)
             }
         }
+        selectCityList()
     }
 
     //第一次进入软件进行地址导入
@@ -89,14 +88,14 @@ class MainViewModel @Inject constructor(
 
 
     //批量刷新天气
-    fun reFreshWeather(isAction:Boolean) {
-        if(isAction){
+    fun reFreshWeather(isAction: Boolean) {
+        if (isAction) {
             _refreshWeather.tryEmit(ActionEvent.Loading)
         }
         viewModelScope.launch {
             val isSuccess = updateWeather(isAction)
-            if(isAction){
-                if(isSuccess) _refreshWeather.emit(ActionEvent.Success) else
+            if (isAction) {
+                if (isSuccess) _refreshWeather.emit(ActionEvent.Success) else
                     _refreshWeather.emit(ActionEvent.Error("网络不佳"))
 
             }
@@ -104,15 +103,9 @@ class MainViewModel @Inject constructor(
     }
 
     //删除本地城市
-    fun deleteWeatherBean(weatherPO: WeatherVO) {
-        viewModelScope.launch {
-            netRepository.deleteCity(weatherPO)
-            //当删除非最后一个城市后，里面的id可能会错乱，导致再次添加城市时会出现两个id一样的情况
-            //所以在删除之后再次刷新天气时可以做到顺序重排
-            //但此时刷新要做到的是用户无感知，所以将刷新天气提取出来，不需要提示用户
-            updateWeather(false)
-            selectCityList { }
-        }
+    fun deleteWeatherBean(weatherVO: WeatherVO) {
+        _cityListLiveData.value = _cityListLiveData.value?.filter { it.id != weatherVO.id }
+        replaceWeatherSort()
     }
 
     private suspend fun updateWeather(isAction: Boolean): Boolean {
@@ -133,37 +126,40 @@ class MainViewModel @Inject constructor(
     fun updateCity(
         fromPosition: Int,
         toPosition: Int,
-        replaceOk: (List<WeatherVO>) -> Unit
     ) {
-        cityList.toMutableList().apply {
-            removeAt(fromPosition)
-            add(toPosition, cityList[fromPosition])
-            replaceOk(this)
-            cityList = this
+        _cityListLiveData.value?.toMutableList()?.apply {
+            val remove = removeAt(fromPosition)
+            add(toPosition,remove)
+            _cityListLiveData.value = this
         }
     }
 
 
     fun replaceWeatherSort() {
         viewModelScope.launch {
-            netRepository.updateCityCount(cityList)
+            netRepository.updateCityCount(_cityListLiveData.value ?: arrayListOf())
         }
     }
 
     suspend fun addLocation(address: Address): Boolean {
-        val lng = "116.813752"
-        val lat = "39.820015"
-//        val lng = address.longitude.toString()
-//        val lat = address.latitude.toString()
+        val lng = address.longitude.toString()
+        val lat = address.latitude.toString()
         val cityName = "${address.locality}${address.featureName}"
         val oldWeather = netRepository.selectLocationWeather()
-        if (oldWeather!=null && oldWeather.lat.toDouble().roundToInt() == address.latitude.roundToInt()
+        if (oldWeather != null && oldWeather.lat.toDouble()
+                .roundToInt() == address.latitude.roundToInt()
             && oldWeather.lng.toDouble().roundToInt() == address.longitude.roundToInt()
-            && System.currentTimeMillis() - oldWeather.updateTime < 1000 * 60 * 60) {
+            && System.currentTimeMillis() - oldWeather.updateTime < 1000 * 60 * 60
+        ) {
             return false
         }
         val weather = netRepository.selectWeather(lng, lat) ?: return true
         netRepository.updateWeather(weather.copy(cityName = cityName, id = 0))
         return false
+    }
+
+
+    suspend fun currentCityCount():Int{
+        return netRepository.getCityCount()
     }
 }

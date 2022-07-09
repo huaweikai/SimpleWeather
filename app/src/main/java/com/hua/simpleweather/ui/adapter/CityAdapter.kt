@@ -2,6 +2,7 @@ package com.hua.simpleweather.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -10,8 +11,10 @@ import coil.size.Scale
 import com.hua.model.weather.WeatherVO
 import com.hua.resource.getSkyBg
 import com.hua.resource.getSkyName
+import com.hua.simpleweather.R
 import com.hua.simpleweather.databinding.ItemCityBinding
 import com.hua.simpleweather.utils.dp
+import com.hua.simpleweather.utils.getString
 import com.hua.simpleweather.utils.isDarkMode
 import kotlin.math.roundToInt
 
@@ -38,7 +41,7 @@ class CityAdapter(
     var isDeleteTime = false
         set(value) {
             field = value
-            notifyItemRangeChanged(0,itemCount)
+            notifyItemRangeChanged(1,itemCount)
         }
     class VHolder(val bind:ItemCityBinding):RecyclerView.ViewHolder(bind.root)
 
@@ -75,7 +78,18 @@ class CityAdapter(
             cityName.text = data.cityName
             val temp = "${data.result.realtime.temperature.roundToInt()}°"
             cityTemp.text = temp
-            cityWeatherDesc.text = getSkyName(data.result.realtime.skycon)
+            cityWeatherDesc.text = getString(
+                R.string.city_item_desc,
+                getSkyName(data.result.realtime.skycon),
+                data.result.daily.temperature[0].min.roundToInt(),
+                data.result.daily.temperature[0].max.roundToInt()
+            )
+            if(data.id != 0){
+                cityDelete.isVisible = isDeleteTime
+                cityDrag.isVisible = isDeleteTime
+            }
+            cityIsLocation.isVisible = data.id == 0
+
         }
 //        holder.bind.apply {
 //            cityBg.setBackgroundResource(

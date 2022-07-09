@@ -1,35 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/frameLayout"
+        android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/addcity_ed"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_margin="20dp"
-        android:background="@drawable/background"
-        android:drawableStart="@drawable/ic_baseline_search_24"
-        android:hint="请输入城市信息"
-        android:singleLine="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.045"
-        tools:ignore="TextContrastCheck" />
+    <com.google.android.material.appbar.MaterialToolbar
+            android:layout_width="match_parent"
+            app:navigationIcon="@drawable/ic_back"
+
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/add_city_toolbar">
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:paddingEnd="16dp"
+                android:layout_height="wrap_content"
+                tools:layout_editor_absoluteY="10dp"
+                tools:layout_editor_absoluteX="16dp" >
+            <EditText
+                    android:hint="输入地址"
+                    android:id="@+id/add_city_ed"
+                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.appbar.MaterialToolbar>
+
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/addrv"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addcity_ed" />
+            android:id="@+id/addrv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add_city_toolbar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -65,8 +65,8 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
 //                bind.cityOk.isVisible = true
             }
         )
-        viewModel.selectCityList {
-            adapter.submitList(viewModel.cityList)
+        viewModel.cityListLiveData.observe(requireActivity()){
+            (adapter.submitList(it))
         }
         bind.cityRv.apply {
             this.adapter = adapter
@@ -78,7 +78,8 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
                     parent: RecyclerView,
                     state: RecyclerView.State
                 ) {
-                    outRect.bottom = 20.dp
+                    outRect.top = 8.dp
+                    outRect.bottom = 8.dp
                     outRect.left = 16.dp
                     outRect.right = 16.dp
                 }
@@ -103,10 +104,8 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
                 target: RecyclerView.ViewHolder
             ): Boolean {
                 if (target.adapterPosition != 0){
-                    viewModel.updateCity(viewHolder.adapterPosition, target.adapterPosition) {
-                        sortedCity = true
-                        adapter.submitList(it)
-                    }
+                    viewModel.updateCity(viewHolder.adapterPosition, target.adapterPosition)
+                    sortedCity = true
                 }
                 return true
             }
@@ -124,10 +123,12 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
                 bind.cityOk.setImageResource(R.drawable.ic_check)
             }
             adapter.isDeleteTime = !adapter.isDeleteTime
-//            //如果删除完毕，再次更新adapter，让删除图标消失,同时让确认图标消失
-//            adapter.isDeleteTime = false
-//            adapter.notifyItemRangeChanged(0, adapter.itemCount)
-//            bind.cityOk.isVisible = false
+        }
+
+        bind.cityDesc.apply {
+            setNavigationOnClickListener {
+                findNavController().navigateUp()
+            }
         }
     }
 

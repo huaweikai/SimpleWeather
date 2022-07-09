@@ -90,14 +90,13 @@ class MainActivity : AppCompatActivity() {
         sp = getSharedPreferences(FIRST_ACTION, MODE_PRIVATE)
         val isFirst = sp.getBoolean(FIRST_ACTION_IS_FIRST, true)
         if (isFirst) viewModel.firstAction()
-        permissionCancel()
-//        locationPermission.launch(
-//            arrayOf(
-//                Manifest.permission.READ_PHONE_STATE,
-//                Manifest.permission.ACCESS_FINE_LOCATION,
-//                Manifest.permission.ACCESS_COARSE_LOCATION,
-//            )
-//        )
+        locationPermission.launch(
+            arrayOf(
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+            )
+        )
     }
 
     private fun getLocation() {
@@ -111,7 +110,7 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     lifecycleScope.launch {
                         if (viewModel.addLocation(it)) {
-                            runOnUI { permissionCancel() }
+                            permissionCancel()
                         }
                     }
                 }
@@ -120,9 +119,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun permissionCancel() {
-        val navOptions = NavOptions.Builder()
-            .setPopUpTo(R.id.homeFragment,true).build()
-        navController.navigate(R.id.cityFragment, Bundle(),navOptions)
+        lifecycleScope.launch{
+            if(viewModel.currentCityCount() <= 0){
+                navController.navigate(R.id.action_toCity_popHome)
+            }
+        }
     }
 
     private fun getLocationProvider(): String {

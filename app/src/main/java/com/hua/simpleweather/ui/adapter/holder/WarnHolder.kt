@@ -25,7 +25,7 @@ class WarnHolder(
         bind.apply {
             itemWarnTitle.setTextColor(colorData.primaryColor)
             val code = data.result.alert.content[0].code
-            itemWarnIcon.setColorFilter(getWarnColor(code))
+            itemWarnIconOuter.setCardBackgroundColor(getWarnColor(code))
             itemWarnIcon.setImageResource(getWarnIcon(code))
             val desc = data.result.alert.content[0].description
             val level = "${getWarnDec(code)}警告:"

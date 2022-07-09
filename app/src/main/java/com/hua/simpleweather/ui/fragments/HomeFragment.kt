@@ -44,6 +44,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         savedInstanceState: Bundle?
     ): View {
         initViewBind(FragmentHomeBinding.inflate(layoutInflater))
+        viewModel.selectCityList()
         return bind.root
     }
 
@@ -103,7 +104,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 adapter.submitList(it)
                 if (isFirst) {
 //                如果是第一次就设置，并在设置后，将first设置为false
-                    bind.homeViewpager.setCurrentItem(position, false)
+                    val index= if(position != -1){
+                        position
+                    }else {
+                        it.size - 1
+                    }
+                    bind.homeViewpager.setCurrentItem(index, false)
                     isFirst = false
                 }
             }
