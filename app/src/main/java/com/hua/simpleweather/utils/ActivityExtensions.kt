@@ -1,10 +1,18 @@
 package com.hua.simpleweather.utils
 
+/**
+ * 对activity进行扩展，借鉴阅读APP的
+ */
 import android.app.Activity
 import android.content.Context
+import android.graphics.Color
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.*
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
+import com.hua.simpleweather.R
 
 fun Activity.fullScreen() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -70,3 +78,26 @@ val WindowManager.windowSize: DisplayMetrics
         }
         return displayMetrics
     }
+
+/**
+ * 设置状态栏颜色
+ */
+fun Activity.setStatusBarColorAuto(
+    @ColorInt color: Int,
+    isTransparent: Boolean,
+    fullScreen: Boolean
+) {
+    val isLightBar = ColorUtils.isColorLight(color)
+    if (fullScreen) {
+        if (isTransparent) {
+            window.statusBarColor = Color.TRANSPARENT
+        } else {
+            window.statusBarColor = getCompatColor(R.color.purple_700)
+        }
+    } else {
+        window.statusBarColor = color
+    }
+    setLightStatusBar(isLightBar)
+}
+
+fun Context.getCompatColor(@ColorRes id: Int): Int = ContextCompat.getColor(this, id)

@@ -7,6 +7,10 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.math.ln
 
+/**
+ * 实体类兼序列化，用于接收接口数据和存储数据库
+ */
+
 @Entity(tableName = "weather")
 @Serializable
 data class WeatherVO(

@@ -23,6 +23,7 @@ import com.hua.simpleweather.databinding.FragmentAddCityBinding
 import com.hua.simpleweather.db.dao.bean.LocalCity
 import com.hua.simpleweather.ui.adapter.AddCityAdapter
 import com.hua.simpleweather.ui.adapter.ModuleItemDecoration
+import com.hua.simpleweather.ui.adapter.moduleItemDecoration
 import com.hua.simpleweather.ui.viewmodels.AddCityViewModel
 import com.hua.simpleweather.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,10 +49,12 @@ class AddCityFragment : BaseFragment<FragmentAddCityBinding>() {
         val adapter = AddCityAdapter{
             showDiaLog(it)
         }
+        //对 EdtextView的值进行监听，实时检索位置信息
         val watch = object :TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
+                //检索相关的位置信息
                 viewModel.searchPlace(s.toString())
             }
         }
@@ -63,28 +66,31 @@ class AddCityFragment : BaseFragment<FragmentAddCityBinding>() {
         bind.addrv.apply {
             this.adapter = adapter
             this.layoutManager = LinearLayoutManager(requireContext())
-            this.addItemDecoration(ModuleItemDecoration())
+            this.addItemDecoration(moduleItemDecoration)
         }
 
-
+        //监听检索到的城市列表
         lifecycleScope.launch {
             viewModel.cityList.collect{
                 adapter.submitList(it)
             }
         }
-
+        //对本地已有的城市进行更新
+        //属于残留代码，现在如果添加成功，就会直接返回到天气界面，只需要一个列表即可，不用监听
         lifecycleScope.launch {
             viewModel.localCity.collect {
                 adapter.updateLocalList(it)
             }
         }
 
+        //对添加事件进行监听
         lifecycleScope.launch {
             viewModel.addEvent.collect {
                 when(it){
                     is Error-> it.message.toast(requireContext())
                     is Success -> {
                         "添加成功".toast(requireContext())
+                        //成功后，将跳转到天气界面
                         findNavController().navigate(R.id.action_addCityFragment_to_homeFragment,
                         Bundle().apply
                          {
@@ -97,6 +103,7 @@ class AddCityFragment : BaseFragment<FragmentAddCityBinding>() {
         }
     }
 
+    //展示一个dialog，用于确定是否添加
     private fun showDiaLog(city:LocalCity){
         AlertDialog.Builder(requireContext()).apply {
             setTitle("添加城市")

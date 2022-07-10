@@ -1,5 +1,9 @@
 package com.hua.resource
 
+/**
+ * 获取天气图标，背景等
+ */
+
 private val skyIcon = mapOf(
     "CLEAR_DAY" to R.drawable.ic_sunny,
     "CLEAR_NIGHT" to R.drawable.ic_yewan_qing,

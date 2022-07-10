@@ -1,6 +1,11 @@
 package com.hua.resource
 
+/**
+ * 获取具体天气信息的实体类
+ */
+
 import com.hua.model.weather.WeatherVO
+import kotlin.math.roundToInt
 
 
 fun getDetailIcon(detailViewType: DetailViewType):Int{
@@ -30,9 +35,9 @@ fun getDetailSubTile(detailViewType: DetailViewType,data:WeatherVO.Result):Strin
         DetailViewType.ViewTypeWind -> "${getWindDirection(data.hourly.wind[0].speed)} ${data.hourly.wind[0].direction}米/秒"
         DetailViewType.ViewTypeWet -> "${data.realtime.humidity * 100}%"
         DetailViewType.ViewTypeUltraviolet-> "${data.realtime.dswrf}"
-        DetailViewType.ViewTypePressure -> "${data.realtime.pressure}"
-        DetailViewType.ViewTypeVisibility -> "${data.realtime.visibility}km"
-        DetailViewType.ViewTypeCloudRate -> "${data.realtime.cloudRate}%"
+        DetailViewType.ViewTypePressure -> "${(data.realtime.pressure / 100).roundToInt()}hPa"
+        DetailViewType.ViewTypeVisibility -> "${data.realtime.visibility.roundToInt()}km"
+        DetailViewType.ViewTypeCloudRate -> "${(data.realtime.cloudRate * 100).roundToInt()}%"
     }
 }
 

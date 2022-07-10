@@ -86,6 +86,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         val position = arguments?.getInt(CITY_TO_HOME, 0) ?: 0
         val adapter =
             WeatherViewPagerAdapter(requireActivity() as AppCompatActivity, attachToWindow = {
+                //延时半秒，如果一直滑动就会导致界面卡顿，先remove在添加，如果小于半秒，则不会执行post的代码
                 homeHandler.removeCallbacksAndMessages(null)
                 homeHandler.postDelayed({
                     setSystemStatus(
@@ -149,6 +150,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun onDestroyView() {
         super.onDestroyView()
         homeHandler.removeCallbacksAndMessages(null)
+        //退出界面后，恢复默认的通知栏颜色
         requireActivity().setLightStatusBar(resources.configuration.uiMode == 0x11)
     }
 }

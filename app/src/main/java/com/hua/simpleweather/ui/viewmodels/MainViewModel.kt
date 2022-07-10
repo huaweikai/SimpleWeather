@@ -40,13 +40,10 @@ class MainViewModel @Inject constructor(
 
     val roomWeather = netRepository.getAllWeather()
 
-    val roomWeatherLiveData = roomWeather.asLiveData(viewModelScope.coroutineContext).value
-
-//    var cityList = listOf<WeatherVO>()
-
     private val _cityListLiveData = MutableLiveData<List<WeatherVO>>()
     val cityListLiveData: LiveData<List<WeatherVO>> get() = _cityListLiveData
 
+    //对本地城市进行检索，因为在城市管理界面需要滑动排序等等，不能直接使用room的流
     fun selectCityList() {
         viewModelScope.launch {
             _cityListLiveData.value = netRepository.selectCityWeather()
@@ -87,7 +84,10 @@ class MainViewModel @Inject constructor(
     }
 
 
-    //批量刷新天气
+    /**
+     * 刷新分两种，启动app后自动刷新，和手动刷新
+     * @param isAction 用于判断是否为人为的刷新
+     */
     fun reFreshWeather(isAction: Boolean) {
         if (isAction) {
             _refreshWeather.tryEmit(ActionEvent.Loading)
@@ -97,7 +97,6 @@ class MainViewModel @Inject constructor(
             if (isAction) {
                 if (isSuccess) _refreshWeather.emit(ActionEvent.Success) else
                     _refreshWeather.emit(ActionEvent.Error("网络不佳"))
-
             }
         }
     }
@@ -105,9 +104,13 @@ class MainViewModel @Inject constructor(
     //删除本地城市
     fun deleteWeatherBean(weatherVO: WeatherVO) {
         _cityListLiveData.value = _cityListLiveData.value?.filter { it.id != weatherVO.id }
+        //删除后，对本地剩余城市排序，防止id冲突等
         replaceWeatherSort()
     }
-
+    /**
+     * 在不是手动刷新的情况下，只刷新时间超过1小时的无效天气，手动刷新，则将所有天气都刷新
+     * @param isAction 用于判断是否为人为的刷新
+     */
     private suspend fun updateWeather(isAction: Boolean): Boolean {
         var isSuccess = false
         placeRepository.selectCities().forEachIndexed { index, it ->
@@ -123,34 +126,45 @@ class MainViewModel @Inject constructor(
         return isSuccess
     }
 
-    fun updateCity(
+    //城市管理界面，滑动后排序手动发送liveData
+    fun updateCityIndex(
         fromPosition: Int,
         toPosition: Int,
     ) {
         _cityListLiveData.value?.toMutableList()?.apply {
+            //将滑动的先移除
             val remove = removeAt(fromPosition)
+            //在将滑动的添加到被加的之前即可
             add(toPosition,remove)
             _cityListLiveData.value = this
+            replaceWeatherSort()
         }
     }
 
-
-    fun replaceWeatherSort() {
+    //对本地城市重新排序id，防止之后id混乱
+    private fun replaceWeatherSort() {
         viewModelScope.launch {
             netRepository.updateCityCount(_cityListLiveData.value ?: arrayListOf())
         }
     }
 
+    /**
+     * @param address 城市信息
+     * @return 是否添加成功，为true则证明失败
+     */
     suspend fun addLocation(address: Address): Boolean {
         val lng = address.longitude.toString()
         val lat = address.latitude.toString()
+        // 从address中获取信息
         val cityName = "${address.locality}${address.featureName}"
         val oldWeather = netRepository.selectLocationWeather()
+        //当位置在roundInt后，无变化，其实移动幅度不大，不必更改定位城市
         if (oldWeather != null && oldWeather.lat.toDouble()
                 .roundToInt() == address.latitude.roundToInt()
             && oldWeather.lng.toDouble().roundToInt() == address.longitude.roundToInt()
             && System.currentTimeMillis() - oldWeather.updateTime < 1000 * 60 * 60
         ) {
+            //在判断后，直接返回false，不再刷新未更新1小时的天气
             return false
         }
         val weather = netRepository.selectWeather(lng, lat) ?: return true
@@ -158,7 +172,7 @@ class MainViewModel @Inject constructor(
         return false
     }
 
-
+    //获取当前城市数量
     suspend fun currentCityCount():Int{
         return netRepository.getCityCount()
     }

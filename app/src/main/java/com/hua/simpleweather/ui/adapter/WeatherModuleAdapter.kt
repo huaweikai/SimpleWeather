@@ -25,6 +25,7 @@ class WeatherModuleAdapter(
     private val activity: AppCompatActivity
 ) : RecyclerView.Adapter<AbstractMainHolder>() {
 
+    //这个才是用于排序卡片式的
     private val typeList = arrayListOf(
         ViewType.ViewTypeNow, ViewType.ViewTypeRealTime,
         ViewType.ViewTypeHour, ViewType.ViewTypeSun,
@@ -33,6 +34,7 @@ class WeatherModuleAdapter(
         ViewType.ViewTypeAbout
     )
 
+    //返回对应的 type值
     override fun getItemViewType(position: Int): Int {
         return typeList[position].type
     }
@@ -40,9 +42,11 @@ class WeatherModuleAdapter(
     private val isDarkMode = activity.applicationContext.isDarkMode()
 
     init {
+        //当预警不为空就把预警卡片添加进去
         if (data.result.alert.content.isNotEmpty()) {
             typeList.add(1, ViewType.ViewTypeWarn)
         } else {
+            //当为空，且存在就移除，如果不存在，不做处理，因为本来它就不是默认存在的
             if (typeList.contains(ViewType.ViewTypeWarn)) {
                 typeList.removeAt(1)
             }
@@ -60,6 +64,7 @@ class WeatherModuleAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AbstractMainHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
+        //对背景进行取色，用于设置卡片的标题等等
         val color = PaletteUtils.resolveByBitmap(
             decodeBitmap(
                 getSkyBg(isDarkMode, data.result.realtime.skycon),
@@ -73,6 +78,7 @@ class WeatherModuleAdapter(
                 )
             )
         }
+        //实例化对应的卡片Holder
         return when (viewType) {
             ViewType.ViewTypeNow.type -> {
                 NowHolder(
@@ -129,25 +135,14 @@ class WeatherModuleAdapter(
     }
 
     override fun onBindViewHolder(holder: AbstractMainHolder, position: Int) {
-        holder.onBindView(
-            data,
-//            colorData = ColorContainerData(Color.RED,Color.CYAN)
-//            colorData = color.copy(
-//                containerColor = ColorUtils.setAlphaComponent(
-//                    color.primaryColor,
-//                    (0.5 * 255).toInt()
-//                )
-//            )
-        )
-//        val colorData =
-//        data.let {
-//
-//        }
+        //绑定对应holder的数据
+        holder.onBindView(data)
     }
-
+    //当前卡片数量
     override fun getItemCount() = typeList.size
 }
 
+//对图片进行压缩
 fun decodeBitmap(@AttrRes id: Int, context: Context): Bitmap {
     val bitmapOption = BitmapFactory.Options()
     bitmapOption.inSampleSize = 2000
@@ -155,6 +150,9 @@ fun decodeBitmap(@AttrRes id: Int, context: Context): Bitmap {
     return BitmapFactory.decodeResource(context.resources, id, bitmapOption)
 }
 
+/**
+ * @param type 只是用于判断id，并不是排序依据
+ */
 sealed class ViewType(val type: Int) {
     object ViewTypeNow : ViewType(1)
     object ViewTypeWarn : ViewType(2)

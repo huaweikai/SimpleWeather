@@ -30,12 +30,15 @@ class SunView @JvmOverloads constructor(
         val width: Int = (MeasureSpec.getSize(widthMeasureSpec) - 2 * mMargin).toInt()
         val deltaRadians =
             Math.toRadians((180 - SUN_ANGLE) / 2.0)
+        //获取需要画的园的半径
         val radius = (width / 2 / cos(deltaRadians)).toInt()
+        //对半径计算出，最终view的高度
         val height = (radius - width / 2 * tan(deltaRadians)).toInt()
         setMeasuredDimension(
             MeasureSpec.makeMeasureSpec((width + 2 * mMargin).toInt(), MeasureSpec.EXACTLY),
             MeasureSpec.makeMeasureSpec((height + 2 * mMargin).toInt(), MeasureSpec.EXACTLY)
         )
+        //计算画圆所需要的rect
         val centerX = measuredWidth / 2
         val centerY = (mMargin + radius).toInt()
         mRectF.set(
@@ -45,20 +48,20 @@ class SunView @JvmOverloads constructor(
             (centerY + radius).toFloat()
         )
     }
-
+    //虚线
     private val mEffect = DashPathEffect(
         floatArrayOf(
             3.valueToPx(context),
             2 * 3.valueToPx(context)
         ), 0f
     )
-
+    //虚线的paint
     private val linePaint = Paint().apply {
         style = Paint.Style.STROKE
         strokeWidth = 1.valueToPx(context)
         pathEffect = mEffect
     }
-
+    //实线的paint
     private val pathPaint = Paint().apply {
         style = Paint.Style.STROKE
         strokeWidth = 5.valueToPx(context)
@@ -66,7 +69,7 @@ class SunView @JvmOverloads constructor(
     }
 
     private val mRectF: RectF = RectF()
-
+    //设置实线虚线的颜色
     fun setColor(colorData: ColorContainerData) {
         pathPaint.color = colorData.primaryColor
         linePaint.color = colorData.containerColor
@@ -86,7 +89,6 @@ class SunView @JvmOverloads constructor(
 
     private val iconPosition = floatArrayOf(0f, 0f)
 
-    private val iconRotation: FloatArray = floatArrayOf(0f, 0f)
 
 
     fun setTime(
@@ -94,6 +96,7 @@ class SunView @JvmOverloads constructor(
         endTime: Long,
         currentTime: Long
     ) {
+        //设置时间
         this.startTime = startTime
         this.endTime = endTime
         this.currentTime = currentTime
@@ -108,6 +111,7 @@ class SunView @JvmOverloads constructor(
         progresses = progresses.coerceAtMost(max)
     }
 
+    //太阳的drawable，并设置其所占大小
     private val drawable = ResourcesCompat.getDrawable(resources, R.drawable.ic_sun, null)?.apply {
         bounds = Rect(0, 0, iconSize.toInt(), iconSize.toInt())
     }
@@ -118,7 +122,9 @@ class SunView @JvmOverloads constructor(
             countAngle()
             val startAngle: Float = 270 - SUN_ANGLE / 2f
             val sweepAngle = (1f * progresses / max) * SUN_ANGLE
-            it.drawArc(mRectF, 270 - SUN_ANGLE / 2f, SUN_ANGLE, false, linePaint)
+            //半圆的虚线
+            it.drawArc(mRectF, startAngle, SUN_ANGLE, false, linePaint)
+            //下面的虚线
             it.drawLine(
                 mMargin,
                 measuredHeight - mMargin,
@@ -126,16 +132,17 @@ class SunView @JvmOverloads constructor(
                 measuredHeight - mMargin,
                 linePaint
             )
+            //画圆
             it.drawArc(mRectF, startAngle, sweepAngle, false, pathPaint)
 
             it.save()
             it.translate(iconPosition[0], iconPosition[1])
-            it.rotate(iconRotation[0], iconSize / 2f, iconSize / 2f)
             drawable?.draw(it)
             it.restore()
         }
     }
 
+    //计算太阳的坐标
     private fun countAngle() {
         ensureProgress()
         val startAngle: Float = 270 - SUN_ANGLE / 2f

@@ -7,6 +7,19 @@ import com.hua.model.weather.WeatherVO
 
 val gson = Gson()
 
+private val temperatureType = object : TypeToken<List<WeatherVO.Result.Temperature>>(){}.type
+private val skyIconType = object :TypeToken<List<WeatherVO.Result.Skycon>>(){}.type
+private val lifeIndexType = object :TypeToken<List<String>>(){}.type
+private val astroType = object :TypeToken<List<WeatherVO.Result.Astro>>(){}.type
+private val lifeDescType = object :TypeToken<List<WeatherVO.Result.LifeDescription>>(){}.type
+private val lifeContentType = object :TypeToken<List<WeatherVO.Result.Content>>(){}.type
+private val dataType = object :TypeToken<List<WeatherVO.Result.Data>>(){}.type
+private val windType = object :TypeToken<List<WeatherVO.Result.Wind>>(){}.type
+private val aqiType = object :TypeToken<List<WeatherVO.Result.HourAQI>>(){}.type
+/**
+ * 对数据库列表进行转换的转换类
+ */
+
 class TypeConverter {
 
     @TypeConverter
@@ -16,8 +29,7 @@ class TypeConverter {
 
     @TypeConverter
     fun stringToTemperature(json:String):List<WeatherVO.Result.Temperature>{
-        val type = object : TypeToken<List<WeatherVO.Result.Temperature>>(){}.type
-        return gson.fromJson(json,type)
+        return gson.fromJson(json,temperatureType)
     }
 
     @TypeConverter
@@ -27,8 +39,7 @@ class TypeConverter {
 
     @TypeConverter
     fun stringToSkyIcon(skyIcon:String):List<WeatherVO.Result.Skycon>{
-        val typeToken = object :TypeToken<List<WeatherVO.Result.Skycon>>(){}.type
-        return gson.fromJson(skyIcon,typeToken)
+        return gson.fromJson(skyIcon,skyIconType)
     }
 
     @TypeConverter
@@ -37,8 +48,7 @@ class TypeConverter {
     }
     @TypeConverter
     fun stringToLifeIndex(skyIcon:String):List<String>{
-        val typeToken = object :TypeToken<List<String>>(){}.type
-        return gson.fromJson(skyIcon,typeToken)
+        return gson.fromJson(skyIcon,lifeIndexType)
     }
 
     @TypeConverter
@@ -47,8 +57,7 @@ class TypeConverter {
     }
     @TypeConverter
     fun stringToAstro(skyIcon:String):List<WeatherVO.Result.Astro>{
-        val typeToken = object :TypeToken<List<WeatherVO.Result.Astro>>(){}.type
-        return gson.fromJson(skyIcon,typeToken)
+        return gson.fromJson(skyIcon, astroType)
     }
 
     @TypeConverter
@@ -57,8 +66,7 @@ class TypeConverter {
     }
     @TypeConverter
     fun stringToLifeDescription(skyIcon:String):List<WeatherVO.Result.LifeDescription>{
-        val typeToken = object :TypeToken<List<WeatherVO.Result.LifeDescription>>(){}.type
-        return gson.fromJson(skyIcon,typeToken)
+        return gson.fromJson(skyIcon,lifeDescType)
     }
 
     @TypeConverter
@@ -67,8 +75,7 @@ class TypeConverter {
     }
     @TypeConverter
     fun stringToLifeContent(skyIcon:String):List<WeatherVO.Result.Content>{
-        val typeToken = object :TypeToken<List<WeatherVO.Result.Content>>(){}.type
-        return gson.fromJson(skyIcon,typeToken)
+        return gson.fromJson(skyIcon, lifeContentType)
     }
 
     @TypeConverter
@@ -78,8 +85,7 @@ class TypeConverter {
 
     @TypeConverter
     fun stringToData(skyIcon:String):List<WeatherVO.Result.Data>{
-        val typeToken = object :TypeToken<List<WeatherVO.Result.Data>>(){}.type
-        return gson.fromJson(skyIcon,typeToken)
+        return gson.fromJson(skyIcon, dataType)
     }
 
     @TypeConverter
@@ -89,8 +95,7 @@ class TypeConverter {
 
     @TypeConverter
     fun stringToWind(skyIcon:String):List<WeatherVO.Result.Wind>{
-        val typeToken = object :TypeToken<List<WeatherVO.Result.Wind>>(){}.type
-        return gson.fromJson(skyIcon,typeToken)
+        return gson.fromJson(skyIcon, windType)
     }
 
     @TypeConverter
@@ -99,9 +104,7 @@ class TypeConverter {
     }
     @TypeConverter
     fun stringToHourAQI(skyIcon:String):List<WeatherVO.Result.HourAQI>{
-        val typeToken = object :TypeToken<List<WeatherVO.Result.HourAQI>>(){}.type
-        return gson.fromJson(skyIcon,typeToken)
+        return gson.fromJson(skyIcon, aqiType)
     }
-
 
 }

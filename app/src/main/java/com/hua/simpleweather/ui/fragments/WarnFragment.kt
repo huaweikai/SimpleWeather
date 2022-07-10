@@ -1,23 +1,17 @@
 package com.hua.simpleweather.ui.fragments
 
-import android.app.Dialog
-import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hua.model.weather.WeatherVO
 import com.hua.simpleweather.databinding.FragementWarnBinding
 import com.hua.simpleweather.ui.adapter.AlertAdapter
-import com.hua.simpleweather.utils.dp
 import com.hua.simpleweather.utils.isDarkMode
-import com.hua.simpleweather.utils.windowSize
 
 
 class WarnFragment:BottomSheetDialogFragment() {
@@ -68,8 +62,8 @@ class WarnFragment:BottomSheetDialogFragment() {
         _bind = null
     }
 
-    private fun getPeekHeight(): Int{
-        val height = resources.displayMetrics.heightPixels
-        return height
+    //获取当前屏幕高度
+    private fun getPeekHeight(): Int {
+        return resources.displayMetrics.heightPixels
     }
 }

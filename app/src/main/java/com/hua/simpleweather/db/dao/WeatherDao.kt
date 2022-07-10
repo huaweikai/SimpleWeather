@@ -23,11 +23,9 @@ interface WeatherDao {
 
     @Query("select * from weather order by id")
     fun getAllWeather(): Flow<List<WeatherVO>>
-//    fun getAllWeather():LiveData<List<WeatherBean>>
 
     @Query("select * from weather order by id")
     suspend fun selectCityWeather(): List<WeatherVO>
-//    fun getAllWeather():LiveData<List<WeatherBean>>
 
     @Query("select * from weather where id = 0")
     suspend fun selectLocationWeather():WeatherVO?

@@ -57,22 +57,20 @@ class WeatherViewPagerAdapter(
 
     override fun onViewAttachedToWindow(holder: VHolder) {
         super.onViewAttachedToWindow(holder)
+        //用于对新展示的背景进行取色，设置通知栏颜色
         attachToWindow(
             currentList[holder.adapterPosition].result.realtime.skycon
         )
     }
 
-    override fun onViewDetachedFromWindow(holder: VHolder) {
-        super.onViewDetachedFromWindow(holder)
-    }
-
     override fun onBindViewHolder(holder: VHolder, position: Int) {
         val data = getItem(position)
         val adapter = WeatherModuleAdapter(data,activity)
+        //卡片式rv
         holder.bind.itemWeatherRv.apply {
             this.adapter = adapter
             this.layoutManager = LinearLayoutManager(holder.itemView.context)
-            addItemDecoration(ModuleItemDecoration())
+            addItemDecoration(moduleItemDecoration)
         }
         holder.bind.itemWeatherBg.load(
             getDayBg(data.result.realtime.skycon)

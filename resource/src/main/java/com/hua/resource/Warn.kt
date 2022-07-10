@@ -1,5 +1,8 @@
 package com.hua.resource
 
+/**
+ * 预警信息获取的工具类
+ */
 import android.graphics.Color
 import androidx.annotation.ColorInt
 

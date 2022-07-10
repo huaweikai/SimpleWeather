@@ -40,7 +40,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(
         okHttpClient: OkHttpClient
-    ) = Retrofit.Builder()
+    ): Retrofit = Retrofit.Builder()
         .addCallAdapterFactory(ApiResultCallAdapterFactory())
         .addConverterFactory(globalJson.asConverterFactory("application/json".toMediaType()))
         .baseUrl(Contacts.BASE_URL)

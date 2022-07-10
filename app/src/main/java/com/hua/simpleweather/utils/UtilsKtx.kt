@@ -20,9 +20,11 @@ import java.util.*
  * @Date   : 2021/12/23
  * @Desc   : ktx
  */
+//toast发送ktx
 fun Any.toast(context: Context){
     Toast.makeText(context,this.toString(),Toast.LENGTH_SHORT).show()
 }
+//将int值转为dp值
 val Int.dp: Int
     get() {
         return TypedValue.applyDimension(
@@ -31,10 +33,12 @@ val Int.dp: Int
             Resources.getSystem().displayMetrics
         ).toInt()
     }
+//将dp值转为px值
 fun Int.dpToPx(context:Context) = (this * context.resources.displayMetrics.density) + 0.5f
-
+//将int值直接转为px值
 fun Int.valueToPx(context: Context) = this * (context.resources.displayMetrics.densityDpi / 160f)
 
+//将Int值转为sp值
 val Int.sp: Float
     get() {
         return TypedValue.applyDimension(
@@ -51,40 +55,19 @@ fun View.disableAutoFill() = run {
     }
 }
 
-
-
-///**
-// * 设置状态栏颜色
-// */
-//fun Activity.setStatusBarColorAuto(
-//    @ColorInt color: Int,
-//    isTransparent: Boolean,
-//    fullScreen: Boolean
-//) {
-//    val isLightBar = ColorUtils.isColorLight(color)
-//    if (fullScreen) {
-//        if (isTransparent) {
-//            window.statusBarColor = Color.TRANSPARENT
-//        } else {
-//            window.statusBarColor = getCompatColor(R.color.status_bar_bag)
-//        }
-//    } else {
-//        window.statusBarColor = color
-//    }
-//    setLightStatusBar(isLightBar)
-//}
-
-
+//viewBind中直接获取资源文字，用于显示
 fun ViewBinding.getString(resId: Int, vararg formatString: Any): String {
     return this.root.resources.getString(resId, *formatString)
 }
-
+//日历单例
 val calendar = Calendar.getInstance()
 
 val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.CHINA)
 
+//对彩云天气的接口时间进行解析
 val resultDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm+08:00", Locale.CHINA)
 
+//由日历转来的时间在小于10时，只有一位
 fun Int.toTime():String{
     return if(this < 10){
         "0$this"

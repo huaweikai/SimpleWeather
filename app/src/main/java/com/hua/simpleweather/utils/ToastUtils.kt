@@ -2,6 +2,10 @@
 
 package com.hua.simpleweather.utils
 
+/**
+ * 对toast进行ktx 是阅读app的ktx
+ */
+
 import android.content.Context
 import android.widget.Toast
 import androidx.fragment.app.Fragment

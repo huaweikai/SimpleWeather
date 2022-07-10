@@ -6,11 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavOptions
-import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,21 +17,17 @@ import com.hua.simpleweather.databinding.FragmentCityBinding
 import com.hua.simpleweather.ui.adapter.CityAdapter
 import com.hua.simpleweather.ui.viewmodels.MainViewModel
 import com.hua.simpleweather.utils.dp
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 
 class CityFragment : BaseFragment<FragmentCityBinding>() {
 
     private val viewModel by activityViewModels<MainViewModel>()
-    private var sortedCity = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         initViewBind(FragmentCityBinding.inflate(layoutInflater))
-        sortedCity = false
         return bind.root
     }
 
@@ -47,26 +39,22 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
         }
         val adapter = CityAdapter(
             onDeleteClick = {
-                //点到了删除按钮
+                //点到了删除按钮，执行删除天气
                 viewModel.deleteWeatherBean(it)
             },
             onclick = { position ->
-                //点到item，回到天气界面
+                //点到item，回到天气界面，并返回当前的position
                 Bundle().also {
                     it.putInt(CITY_TO_HOME, position)
                     findNavController().navigate(
                         R.id.action_cityFragment_to_homeFragment,
                         it)
                 }
-            },
-            onLongClick = {
-                //长按已被弃用
-                //如果adapter某一个长按，将确认键显示
-//                bind.cityOk.isVisible = true
             }
         )
+        //对城市列表接收和设置
         viewModel.cityListLiveData.observe(requireActivity()){
-            (adapter.submitList(it))
+            adapter.submitList(it)
         }
         bind.cityRv.apply {
             this.adapter = adapter
@@ -91,7 +79,8 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder
             ): Int {
-                if (viewHolder.adapterPosition != 0) {
+                //当需要被滑动的id == 0也就是为定位天气时，不允许被滑动
+                if (viewModel.cityListLiveData.value?.get(viewHolder.adapterPosition)?.id != 0) {
                     val dragFlag = ItemTouchHelper.UP or ItemTouchHelper.DOWN
                     return makeMovementFlags(dragFlag, 0)
                 }
@@ -103,9 +92,9 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
             ): Boolean {
-                if (target.adapterPosition != 0){
-                    viewModel.updateCity(viewHolder.adapterPosition, target.adapterPosition)
-                    sortedCity = true
+                //当移动到 定位天气时，不允许替换位置，保持定位天气永远第一位
+                if (viewModel.cityListLiveData.value?.get(target.adapterPosition)?.id != 0){
+                    viewModel.updateCityIndex(viewHolder.adapterPosition, target.adapterPosition)
                 }
                 return true
             }
@@ -130,14 +119,6 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
                 findNavController().navigateUp()
             }
         }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        if(sortedCity){
-            viewModel.replaceWeatherSort()
-        }
-
     }
 
 }

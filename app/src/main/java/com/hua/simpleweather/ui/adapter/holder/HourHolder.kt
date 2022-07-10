@@ -69,6 +69,6 @@ class HourHolder(
             }
         }
 
-        override fun getItemCount() = data.temperature.size
+        override fun getItemCount() = if(data.temperature.size <= 12) data.temperature.size else data.temperature.size / 2
     }
 }

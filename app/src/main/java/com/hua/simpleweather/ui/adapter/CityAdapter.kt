@@ -25,8 +25,7 @@ import kotlin.math.roundToInt
  */
 class CityAdapter(
     private val onDeleteClick:(weatherPO: WeatherVO)->Unit,
-    private val onclick:(Int)->Unit,
-    private val onLongClick:()->Unit
+    private val onclick:(Int)->Unit
 ):ListAdapter<WeatherVO,CityAdapter.VHolder>(
     object :DiffUtil.ItemCallback<WeatherVO>(){
         override fun areItemsTheSame(oldItem: WeatherVO, newItem: WeatherVO): Boolean {

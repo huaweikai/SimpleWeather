@@ -2,6 +2,10 @@ package com.hua.resource
 
 import com.hua.model.weather.WeatherVO
 
+/**
+ * 获取AQI的具体数值或介绍的工具类
+ */
+
 fun getAQIDesc(aqi: String): String {
     val aqiInt = aqi.toIntOrNull()
     if (aqiInt == null || aqiInt < 0) return "未知"

@@ -42,12 +42,14 @@ class AddCityViewModel @Inject constructor(
         }
     }
 
+    //用于判断那些城市已经添加进去了
     val localCity = placeRepository.selectLocalCity()
 
+    //添加城市
     fun addCity(localCity: LocalCity){
         viewModelScope.launch {
             val primary = localCity.lng + localCity.lat
-            //用于排序使用
+            //检索非定位城市有多少，进行id计算
             val num = netRepository.selectNoLocationCount()
             if(netRepository.cityExist(primary) == 0){
                 val weather = netRepository.getWeather(localCity.lng,localCity.lat,localCity.cityName,num+1)

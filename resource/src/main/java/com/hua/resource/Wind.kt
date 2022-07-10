@@ -1,5 +1,9 @@
 package com.hua.resource
 
+/**
+ * 风信息，等级，介绍等的工具类
+ */
+
 fun getWind(kmH: Float): Int {
     return when (kmH) {
         in 1f..5f -> 1
