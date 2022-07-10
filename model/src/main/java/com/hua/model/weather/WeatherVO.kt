@@ -79,7 +79,31 @@ data class WeatherVO(
             val astro: List<Astro>,
             @SerialName("life_index")
             @Embedded("index_")
-            val index: Index
+            val index: Index,
+            @SerialName("air_quality")
+            @Embedded("daily_air_")
+            val airQuality:DailyAirQuality
+        )
+
+        @Serializable
+        data class DailyAirQuality(
+            val aqi:List<DailyAQI>,
+            val pm25:List<DailyPM25>
+        )
+
+        @Serializable
+        data class DailyAQI(
+            val date:String,
+            val max:AQI,
+            val min:AQI,
+            val avg:AQI
+        )
+        @Serializable
+        data class DailyPM25(
+            val date: String,
+            val max:Int,
+            val avg:Int,
+            val min:Int
         )
 
         @Serializable

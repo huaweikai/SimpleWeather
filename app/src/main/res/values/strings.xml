@@ -19,4 +19,9 @@
     <string name="item_detail_value">%d 微克/每立方米</string>
     <string name="city_item_desc">%s  %d°C ~ %d°C</string>
     <string name="addcity_location">经度:%s 纬度:%s</string>
+    <string name="share_air_desc">空气质量%s %d</string>
+    <string name="share_city_detail">%s %s %s</string>
+    <string name="share_year_month">%s/%s</string>
+    <string name="share_item_temp">%s°/%s°</string>
+    <string name="share_item_temp_date">%s/%s</string>
 </resources>

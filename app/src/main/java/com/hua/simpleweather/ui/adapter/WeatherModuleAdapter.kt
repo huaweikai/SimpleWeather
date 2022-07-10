@@ -3,11 +3,14 @@ package com.hua.simpleweather.ui.adapter
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.PopupWindow
 import androidx.annotation.AttrRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.ColorUtils
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.hua.material.materialcolor.PaletteUtils
 import com.hua.model.weather.WeatherVO
@@ -15,8 +18,11 @@ import com.hua.resource.getSkyBg
 import com.hua.simpleweather.MainActivity
 import com.hua.simpleweather.R
 import com.hua.simpleweather.databinding.*
+import com.hua.simpleweather.ui.MorePopWindow
 import com.hua.simpleweather.ui.adapter.holder.*
 import com.hua.simpleweather.ui.fragments.WarnFragment
+import com.hua.simpleweather.ui.showMorePopWindow
+import com.hua.simpleweather.utils.dp
 import com.hua.simpleweather.utils.isDarkMode
 
 
@@ -88,6 +94,9 @@ class WeatherModuleAdapter(
                 ).apply {
                     bind.itemNowAdd.setOnClickListener {
                         (activity as MainActivity).navController.navigate(R.id.action_homeFragment_to_cityFragment)
+                    }
+                    bind.itemNowMore.setOnClickListener {
+                        it.showMorePopWindow(activity.findNavController(R.id.fragmentContainerView),data)
                     }
                 }
             }

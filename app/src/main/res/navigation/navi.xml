@@ -46,4 +46,8 @@
                 app:popUpToInclusive="true"
                 app:launchSingleTop="true" />
     </fragment>
+    <fragment
+            android:id="@+id/shareFragment"
+            android:name="com.hua.simpleweather.ui.fragments.ShareFragment"
+            android:label="ShareFragment" />
 </navigation>

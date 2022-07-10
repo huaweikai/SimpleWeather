@@ -29,6 +29,7 @@
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/fragment_add_city.xml" value="0.24947916666666667" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/fragment_city.xml" value="0.2" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/fragment_home.xml" value="0.2" />
+        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/fragment_share.xml" value="0.1493421052631579" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_about.xml" value="0.22644927536231885" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_add_city.xml" value="0.264" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_air_card.xml" value="0.23645833333333333" />
@@ -42,14 +43,19 @@
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_now.xml" value="0.2" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_now_.xml" value="0.2" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_now_card.xml" value="0.23645833333333333" />
+        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_realtime_detail_card.xml" value="0.23229166666666667" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_realtime_survey.xml" value="0.1" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_realtime_survey_card.xml" value="0.4" />
+        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_share_app.xml" value="0.23125" />
+        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_share_weather.xml" value="0.264" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_warn_card.xml" value="0.23541666666666666" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_warning_card.xml" value="0.6222479721900348" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_weather_main.xml" value="0.22644927536231885" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_weather_pager.xml" value="0.23541666666666666" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/min.xml" value="0.18369829683698297" />
+        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/popwindow_more.xml" value="0.23125" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/rv_item_hour.xml" value="0.2" />
+        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/share_app_item.xml" value="0.23541666666666666" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/menu/menu.xml" value="0.23541666666666666" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.265625" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.265625" />

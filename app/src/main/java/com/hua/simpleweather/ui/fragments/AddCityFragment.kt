@@ -109,9 +109,9 @@ class AddCityFragment : BaseFragment<FragmentAddCityBinding>() {
             setTitle("添加城市")
             setMessage("确认添加 ${city.cityName}吗")
             setPositiveButton("确定"
-            ) { dialog, which -> viewModel.addCity(city) }
+            ) { _, _ -> viewModel.addCity(city) }
             setNegativeButton("取消"
-            ) { dialog, which ->  }
+            ) { _, _ ->  }
             create().show()
         }
     }

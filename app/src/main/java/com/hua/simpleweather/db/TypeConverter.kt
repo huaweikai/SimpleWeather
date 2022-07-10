@@ -16,6 +16,8 @@ private val lifeContentType = object :TypeToken<List<WeatherVO.Result.Content>>(
 private val dataType = object :TypeToken<List<WeatherVO.Result.Data>>(){}.type
 private val windType = object :TypeToken<List<WeatherVO.Result.Wind>>(){}.type
 private val aqiType = object :TypeToken<List<WeatherVO.Result.HourAQI>>(){}.type
+private val dailyAqi = object :TypeToken<List<WeatherVO.Result.DailyAQI>>(){}.type
+private val dailyPM25 = object :TypeToken<List<WeatherVO.Result.DailyPM25>>(){}.type
 /**
  * 对数据库列表进行转换的转换类
  */
@@ -105,6 +107,24 @@ class TypeConverter {
     @TypeConverter
     fun stringToHourAQI(skyIcon:String):List<WeatherVO.Result.HourAQI>{
         return gson.fromJson(skyIcon, aqiType)
+    }
+
+    @TypeConverter
+    fun dailyAQIToString(list:List<WeatherVO.Result.DailyAQI>):String{
+        return gson.toJson(list)
+    }
+    @TypeConverter
+    fun stringToDailyAQI(skyIcon:String):List<WeatherVO.Result.DailyAQI>{
+        return gson.fromJson(skyIcon, dailyAqi)
+    }
+
+    @TypeConverter
+    fun dailyPM25ToString(list:List<WeatherVO.Result.DailyPM25>):String{
+        return gson.toJson(list)
+    }
+    @TypeConverter
+    fun stringToDailyPM25(skyIcon:String):List<WeatherVO.Result.DailyPM25>{
+        return gson.fromJson(skyIcon, dailyPM25)
     }
 
 }
