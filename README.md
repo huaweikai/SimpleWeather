@@ -7,4 +7,14 @@
 #### 软件架构
 软件大部分都是MVVM设计，并且由于初步设计，是由很多recycleView嵌套而成，但整体能将效果展示。
 
+### 主页
+
+![home.jpg](./screenshots/screenshots-home.jpg)
+
+### 城市管理
+![city.jpg](./screenshots/screenshots-city.jpg)
+
+### 分享天气
+![share.jpg](./screenshots/screenshots-share.jpg)
+
 
