@@ -13,7 +13,9 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDestination
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hua.network.Contacts.CITY_TO_HOME
 import com.hua.simpleweather.ActionEvent.*
@@ -46,11 +48,11 @@ class AddCityFragment : BaseFragment<FragmentAddCityBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = AddCityAdapter{
+        val adapter = AddCityAdapter {
             showDiaLog(it)
         }
         //对 EdtextView的值进行监听，实时检索位置信息
-        val watch = object :TextWatcher{
+        val watch = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
@@ -71,7 +73,7 @@ class AddCityFragment : BaseFragment<FragmentAddCityBinding>() {
 
         //监听检索到的城市列表
         lifecycleScope.launch {
-            viewModel.cityList.collect{
+            viewModel.cityList.collect {
                 adapter.submitList(it)
             }
         }
@@ -86,32 +88,37 @@ class AddCityFragment : BaseFragment<FragmentAddCityBinding>() {
         //对添加事件进行监听
         lifecycleScope.launch {
             viewModel.addEvent.collect {
-                when(it){
-                    is Error-> it.message.toast(requireContext())
+                when (it) {
+                    is Error -> it.message.toast(requireContext())
                     is Success -> {
                         "添加成功".toast(requireContext())
                         //成功后，将跳转到天气界面
-                        findNavController().navigate(R.id.action_addCityFragment_to_homeFragment,
-                        Bundle().apply
-                         {
-                             putInt(CITY_TO_HOME,-1)
-                         })
+                        findNavController().navigate(
+                            R.id.action_addCityFragment_to_homeFragment,
+                            Bundle().apply
+                            {
+                                putInt(CITY_TO_HOME, -1)
+                            }
+                        )
+
                     }
-                    else->{}
+                    else -> {}
                 }
             }
         }
     }
 
     //展示一个dialog，用于确定是否添加
-    private fun showDiaLog(city:LocalCity){
+    private fun showDiaLog(city: LocalCity) {
         AlertDialog.Builder(requireContext()).apply {
             setTitle("添加城市")
             setMessage("确认添加 ${city.cityName}吗")
-            setPositiveButton("确定"
+            setPositiveButton(
+                "确定"
             ) { _, _ -> viewModel.addCity(city) }
-            setNegativeButton("取消"
-            ) { _, _ ->  }
+            setNegativeButton(
+                "取消"
+            ) { _, _ -> }
             create().show()
         }
     }

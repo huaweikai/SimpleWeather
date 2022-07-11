@@ -34,8 +34,8 @@ class WeatherModuleAdapter(
 
     //这个才是用于排序卡片式的
     private val typeList = arrayListOf(
-        ViewType.ViewTypeNow, ViewType.ViewTypeRealTime,ViewType.ViewTypeDaily,
-        ViewType.ViewTypeHour, ViewType.ViewTypeSun,
+        ViewType.ViewTypeNow, ViewType.ViewTypeRealTime,
+        ViewType.ViewTypeHour,ViewType.ViewTypeDaily, ViewType.ViewTypeSun,
         ViewType.ViewTypeAirDetail,
         ViewType.ViewTypeDetail,
         ViewType.ViewTypeAbout
@@ -169,8 +169,8 @@ fun decodeBitmap(@AttrRes id: Int, context: Context): Bitmap {
 sealed class ViewType(val type: Int) {
     object ViewTypeNow : ViewType(1)
     object ViewTypeWarn : ViewType(2)
-    object ViewTypeRealTime : ViewType(3)
-    object ViewTypeHour : ViewType(4)
+    object ViewTypeHour : ViewType(3)
+    object ViewTypeRealTime : ViewType(4)
     object ViewTypeDaily:ViewType(5)
     object ViewTypeSun : ViewType(6)
     object ViewTypeAirDetail:ViewType(7)

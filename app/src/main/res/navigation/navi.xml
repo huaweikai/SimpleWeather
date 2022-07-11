@@ -18,7 +18,7 @@
         <action
                 android:id="@+id/action_toCity_popHome"
                 app:destination="@id/cityFragment"
-                app:popUpTo="@id/homeFragment"
+                app:popUpTo="@id/cityFragment"
                 app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -31,7 +31,7 @@
         <action
                 android:id="@+id/action_cityFragment_to_homeFragment"
                 app:destination="@id/homeFragment"
-                app:popUpTo="@id/cityFragment"
+                app:popUpTo="@id/homeFragment"
                 app:launchSingleTop="true"
                 app:popUpToInclusive="true" />
     </fragment>
@@ -42,7 +42,7 @@
         <action
                 android:id="@+id/action_addCityFragment_to_homeFragment"
                 app:destination="@id/homeFragment"
-                app:popUpTo="@id/addCityFragment"
+                app:popUpTo="@id/homeFragment"
                 app:popUpToInclusive="true"
                 app:launchSingleTop="true" />
     </fragment>

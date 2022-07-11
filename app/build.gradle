@@ -13,8 +13,8 @@ android {
         applicationId "com.hua.simpleweather"
         minSdk 21
         targetSdk 31
-        versionCode 4
-        versionName "1.2.0"
+        versionCode 5
+        versionName "1.2.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -59,8 +59,9 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
-    implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"
-    implementation "androidx.navigation:navigation-ui-ktx:2.3.5"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.4.2"
+    implementation "androidx.navigation:navigation-ui-ktx:2.4.2"
+    implementation 'androidx.navigation:navigation-common-ktx:2.4.2'
     implementation 'androidx.palette:palette-ktx:1.0.0'
 
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
