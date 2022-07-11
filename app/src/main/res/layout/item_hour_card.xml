@@ -11,7 +11,7 @@
 
         <TextView
             android:id="@+id/item_hour_title"
-            style="@style/Item_car_Title"
+            style="@style/Item_card_Title"
             android:text="@string/item_hour_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

@@ -14,7 +14,7 @@
                 android:text="@string/string_atrso"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-            style="@style/Item_car_Title" />
+            style="@style/Item_card_Title" />
 
         <com.hua.simpleweather.ui.view.SunView
                 app:layout_constraintTop_toBottomOf="@id/item_atrso_title"

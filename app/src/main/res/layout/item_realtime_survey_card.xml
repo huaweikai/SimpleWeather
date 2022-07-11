@@ -37,7 +37,7 @@
 
                 app:layout_constraintTop_toBottomOf="@+id/imageView"
                 app:layout_constraintStart_toStartOf="parent"
-            style="@style/Item_car_Title"
+            style="@style/Item_card_Title"
                 android:fontFamily="sans-serif-medium"
                 android:id="@+id/item_survey_title" />
 

@@ -36,6 +36,9 @@
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_alert.xml" value="0.23541666666666666" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_atrso_card.xml" value="0.264" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_city.xml" value="0.4" />
+        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_daily_card.xml" value="0.14868421052631578" />
+        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_daily_weather.xml" value="0.2" />
+        <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_detail.xml" value="0.1493421052631579" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_forecast.xml" value="0.22644927536231885" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_hour_card.xml" value="0.213768115942029" />
         <entry key="..\:/Documents/SimpleWeather/app/src/main/res/layout/item_life_index.xml" value="0.4" />

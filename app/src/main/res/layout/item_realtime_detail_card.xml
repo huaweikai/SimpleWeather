@@ -10,7 +10,7 @@
         <TextView
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            style="@style/Item_car_Title"
+            style="@style/Item_card_Title"
             android:id="@+id/item_realtime_detail_title"
             android:text="天气详情" />
 <!--        <LinearLayout-->

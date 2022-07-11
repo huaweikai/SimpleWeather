@@ -10,7 +10,7 @@
         <TextView
                 android:id="@+id/item_warn_title"
                 android:text="天气预警"
-            style="@style/Item_car_Title"
+            style="@style/Item_card_Title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

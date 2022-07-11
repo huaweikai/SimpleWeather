@@ -51,7 +51,7 @@ class AlertAdapter:ListAdapter<WeatherVO.Result.Content,AlertAdapter.VHolder>(
             itemAlertTime.text = getString(
                 R.string.alert_time,
                 calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.MONTH) + 1,
                 calendar.get(Calendar.DAY_OF_MONTH),
                 calendar.get(Calendar.HOUR_OF_DAY).toTime(),
                 calendar.get(Calendar.MINUTE).toTime()

@@ -24,4 +24,6 @@
     <string name="share_year_month">%s/%s</string>
     <string name="share_item_temp">%s°/%s°</string>
     <string name="share_item_temp_date">%s/%s</string>
+    <string name="item_daily_date">%s/%s/%s</string>
+    <string name="item_daily_temp">%s° ~ %s°</string>
 </resources>

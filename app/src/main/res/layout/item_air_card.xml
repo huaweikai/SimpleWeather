@@ -21,7 +21,7 @@
                 app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-                style="@style/Item_car_Title"
+                style="@style/Item_card_Title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:text="空气质量"

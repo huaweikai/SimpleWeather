@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import androidx.annotation.AttrRes
@@ -33,7 +34,7 @@ class WeatherModuleAdapter(
 
     //这个才是用于排序卡片式的
     private val typeList = arrayListOf(
-        ViewType.ViewTypeNow, ViewType.ViewTypeRealTime,
+        ViewType.ViewTypeNow, ViewType.ViewTypeRealTime,ViewType.ViewTypeDaily,
         ViewType.ViewTypeHour, ViewType.ViewTypeSun,
         ViewType.ViewTypeAirDetail,
         ViewType.ViewTypeDetail,
@@ -133,6 +134,9 @@ class WeatherModuleAdapter(
             ViewType.ViewTypeAirDetail.type->{
                 AirHolder(ItemAirCardBinding.inflate(layoutInflater,parent,false),color)
             }
+            ViewType.ViewTypeDaily.type ->{
+                DailyDayHolder(ItemDailyCardBinding.inflate(layoutInflater,parent,false),color)
+            }
             else -> {
                 AboutHolder(
                     ItemAboutBinding.inflate(
@@ -167,8 +171,9 @@ sealed class ViewType(val type: Int) {
     object ViewTypeWarn : ViewType(2)
     object ViewTypeRealTime : ViewType(3)
     object ViewTypeHour : ViewType(4)
-    object ViewTypeSun : ViewType(5)
-    object ViewTypeAirDetail:ViewType(6)
-    object ViewTypeDetail:ViewType(7)
-    object ViewTypeAbout : ViewType(8)
+    object ViewTypeDaily:ViewType(5)
+    object ViewTypeSun : ViewType(6)
+    object ViewTypeAirDetail:ViewType(7)
+    object ViewTypeDetail:ViewType(8)
+    object ViewTypeAbout : ViewType(9)
 }
