@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -19,7 +20,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.FileProvider
 import androidx.core.graphics.ColorUtils
+import androidx.core.graphics.scaleMatrix
 import androidx.core.view.drawToBitmap
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -36,20 +40,12 @@ import com.hua.simpleweather.ui.adapter.ShareAppAdapter
 import com.hua.simpleweather.utils.*
 import kotlinx.serialization.decodeFromString
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.*
 import kotlin.math.roundToInt
 
 class ShareFragment : BaseFragment<FragmentShareBinding>() {
-
-    private val readPermission =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-            if (it.values.contains(false)) {
-                toastOnUi("权限不足")
-            } else {
-                saveImage()
-            }
-        }
 
     private val shareAppAdapter by lazy {
         ShareAppAdapter()
@@ -75,18 +71,7 @@ class ShareFragment : BaseFragment<FragmentShareBinding>() {
         shareAppAdapter.setData(getShareApps(requireContext()))
 
         shareAppAdapter.setOnClickListener {
-            saveImageUri = saveImage()
-            if(saveImageUri == null) {
-                toastOnUi("保存为图片失败")
-                return@setOnClickListener
-            }
-            Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_STREAM, saveImageUri)
-                type = "image/*"
-                `package` = it.packageName
-                startActivity(this)
-            }
+            shareImage(it)
         }
     }
 
@@ -208,16 +193,36 @@ class ShareFragment : BaseFragment<FragmentShareBinding>() {
                 )
             )
         }
+        appInfo.add(0, AppInfoVo(
+            icon = AppCompatResources.getDrawable(requireContext(),R.drawable.ic_download),
+            appName = "保存在本地",
+            packageName = "-1",
+            launcherName = ""
+        ))
         return appInfo
     }
 
     private fun saveImage(): Uri? {
         val bitmap = bind.shareBitmap.drawToBitmap()
-        val contentValues = ContentValues().apply {
+        val dir = File("${requireContext().cacheDir}","weather_share")
+        if(!dir.exists()) dir.mkdir()
+        val newFile = File(dir,"simpleWeather_share_${simpleDateFormat.format(Date(System.currentTimeMillis()))}.png")
+        FileOutputStream(newFile).use {
+            bitmap.compress(Bitmap.CompressFormat.PNG,100,it)
+        }
 
+        return try {
+            FileProvider.getUriForFile(requireContext(),"com.hua.simpleweather.provider.ShareFileProvider",newFile)
+        } catch (e: Exception) {
+            null
+        }
+    }
+    private fun saveImageToLocal(uri: Uri){
+        val fos = requireContext().contentResolver.openInputStream(uri)
+        val contentValues = ContentValues().apply {
             put(
                 MediaStore.Images.Media.DISPLAY_NAME,
-                "简易天气分享${simpleDateFormat.format(Date(System.currentTimeMillis()))}"
+                "simpleWeather_share_${simpleDateFormat.format(Date(System.currentTimeMillis()))}.png"
             )
             put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
 
@@ -227,36 +232,34 @@ class ShareFragment : BaseFragment<FragmentShareBinding>() {
             contentValues
         )
         saveUri?.let {
-            requireContext().contentResolver.openOutputStream(it)?.use {
-                bitmap.compress(Bitmap.CompressFormat.PNG,100,it)
+            requireContext().contentResolver.openOutputStream(it)?.use { ops->
+                fos?.use { ips->
+                    val buff = ByteArray(1024)
+                    var readLen = 0
+                    while (ips.read(buff).also { readLen = it } != -1){
+                        ops.write(buff,0,readLen)
+                    }
+                }
             }
         }
-        return saveUri
-
-//        val bitmap = bind.shareBitmap.drawToBitmap()
-//        val dir = File("${requireContext().externalCacheDir}/share_weather/")
-//        if(!dir.exists()){
-//            dir.mkdir()
-//        }
-//        val fileName = File(dir,"${System.currentTimeMillis()}.png")
-//        Log.d("TAG", "saveImage: 开始保存图片")
-//        val fos = FileOutputStream(fileName)
-//        bitmap.compress(Bitmap.CompressFormat.PNG,100,fos)
-//        fos.flush()
-//        fos.close()
-//        Log.d("TAG", "saveImage: 保存图片成功")
-//        return fileName.name
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        if(saveImageUri != null){
-            context?.contentResolver?.delete(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                "${MediaStore.Images.Media.DATA}=?",
-                arrayOf(saveImageUri.toString())
-            )
-
+    private fun shareImage(appInfoVo: AppInfoVo){
+        if(saveImageUri == null) saveImageUri = saveImage()
+        if(saveImageUri == null){
+            toastOnUi("保存图片失败")
+            return
+        }
+        if(appInfoVo.packageName == "-1"){
+            saveImageToLocal(saveImageUri!!)
+            toastOnUi("已保存到本地")
+        }else{
+            Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_STREAM, saveImageUri)
+                type = "image/*"
+                `package` = appInfoVo.packageName
+                startActivity(this)
+            }
         }
     }
 }
