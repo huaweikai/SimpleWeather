@@ -1,21 +1,15 @@
 package com.hua.simpleweather.ui.fragments
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavDestination
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hua.network.Contacts.CITY_TO_HOME
 import com.hua.simpleweather.ActionEvent.*
@@ -23,13 +17,11 @@ import com.hua.simpleweather.R
 import com.hua.simpleweather.base.BaseFragment
 import com.hua.simpleweather.databinding.FragmentAddCityBinding
 import com.hua.simpleweather.db.dao.bean.LocalCity
-import com.hua.simpleweather.ui.adapter.AddCityAdapter
-import com.hua.simpleweather.ui.adapter.ModuleItemDecoration
+import com.hua.simpleweather.ui.adapter.PagingCityAdapter
 import com.hua.simpleweather.ui.adapter.moduleItemDecoration
 import com.hua.simpleweather.ui.viewmodels.AddCityViewModel
 import com.hua.simpleweather.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
@@ -48,7 +40,7 @@ class AddCityFragment : BaseFragment<FragmentAddCityBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = AddCityAdapter {
+        val adapter = PagingCityAdapter {
             showDiaLog(it)
         }
         //对 EdtextView的值进行监听，实时检索位置信息
@@ -57,7 +49,9 @@ class AddCityFragment : BaseFragment<FragmentAddCityBinding>() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
                 //检索相关的位置信息
-                viewModel.searchPlace(s.toString())
+//                viewModel.searchPlace(s.toString())
+                viewModel.key = s.toString()
+                adapter.refresh()
             }
         }
         bind.addCityEd.addTextChangedListener(watch)
@@ -73,8 +67,8 @@ class AddCityFragment : BaseFragment<FragmentAddCityBinding>() {
 
         //监听检索到的城市列表
         lifecycleScope.launch {
-            viewModel.cityList.collect {
-                adapter.submitList(it)
+            viewModel.pagingSelectPaging.collect {
+                adapter.submitData(it)
             }
         }
         //对本地已有的城市进行更新

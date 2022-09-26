@@ -1,19 +1,16 @@
+@file:Suppress("unused")
 package com.hua.simpleweather.ui.viewmodels
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import com.hua.simpleweather.ActionEvent
 import com.hua.simpleweather.db.dao.bean.LocalCity
 import com.hua.simpleweather.repository.NetRepository
 import com.hua.simpleweather.repository.PlaceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -44,6 +41,20 @@ class AddCityViewModel @Inject constructor(
 
     //用于判断那些城市已经添加进去了
     val localCity = placeRepository.selectLocalCity()
+
+    private val pagingConfig = PagingConfig(
+        pageSize = 50,
+        enablePlaceholders = true,
+        prefetchDistance = 0,
+        initialLoadSize = 50,
+        maxSize = 200
+    )
+
+    var key = ""
+
+    val pagingSelectPaging = Pager(pagingConfig){
+        placeRepository.queryCities(key)
+    }.flow
 
     //添加城市
     fun addCity(localCity: LocalCity){

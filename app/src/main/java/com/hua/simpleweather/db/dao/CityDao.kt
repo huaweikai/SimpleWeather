@@ -1,5 +1,6 @@
 package com.hua.simpleweather.db.dao
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -19,5 +20,8 @@ interface CityDao {
 
     @Query("select * from localcity where cityName like :query")
     suspend fun selectCity(query: String):List<LocalCity>
+
+    @Query("select * from localcity where cityName like :query")
+    fun selectPagingCity(query: String): PagingSource<Int,LocalCity>
 
 }

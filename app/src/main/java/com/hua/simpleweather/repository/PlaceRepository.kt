@@ -1,6 +1,6 @@
 package com.hua.simpleweather.repository
 
-
+import androidx.paging.PagingSource
 import com.hua.simpleweather.db.dao.CityDao
 import com.hua.simpleweather.db.dao.WeatherDao
 import com.hua.simpleweather.db.dao.bean.CityBean
@@ -36,4 +36,6 @@ class PlaceRepository @Inject constructor(
     fun selectLocalCity(): Flow<List<String>> {
         return weatherDao.selectLocalCity()
     }
+
+    fun queryCities(query: String): PagingSource<Int,LocalCity> = cityDao.selectPagingCity("%$query%")
 }

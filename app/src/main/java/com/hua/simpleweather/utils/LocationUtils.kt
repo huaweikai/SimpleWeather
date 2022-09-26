@@ -1,16 +1,11 @@
 package com.hua.simpleweather.utils
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.*
 import android.os.Build
 import android.os.CancellationSignal
 import android.os.Looper
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import java.util.*
 
 object LocationUtils {
@@ -20,13 +15,13 @@ object LocationUtils {
         lng:Double,
         lat:Double
     ): Address? {
-        var result: List<Address?>? = null
+        val result: List<Address?>?
         val gc = Geocoder(context, Locale.getDefault())
         result = gc.getFromLocation(
             lat,
             lng, 1
         )
-        return if(result.isEmpty()) null else result[0]
+        return if(result.isNullOrEmpty()) null else result[0]
     }
 }
 
@@ -37,7 +32,7 @@ fun LocationManager.getLocation(
     getAddress:(Address?)->Unit
 ){
     if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.R){
-        getCurrentLocation(provider, CancellationSignal(),context.mainExecutor){it->
+        getCurrentLocation(provider, CancellationSignal(),context.mainExecutor){
             if(it != null){
                 getAddress(LocationUtils.getAddress(context,it.longitude,it.latitude))
             }else{
@@ -49,7 +44,7 @@ fun LocationManager.getLocation(
     }else{
         requestSingleUpdate(
             provider,
-            { it ->
+            {
                 getAddress(LocationUtils.getAddress(context,it.longitude,it.latitude))
             }, Looper.getMainLooper()
         )

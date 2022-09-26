@@ -1,23 +1,10 @@
 package com.hua.simpleweather.db
 
 import androidx.room.TypeConverter
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.hua.model.weather.WeatherVO
-
-val gson = Gson()
-
-private val temperatureType = object : TypeToken<List<WeatherVO.Result.Temperature>>(){}.type
-private val skyIconType = object :TypeToken<List<WeatherVO.Result.Skycon>>(){}.type
-private val lifeIndexType = object :TypeToken<List<String>>(){}.type
-private val astroType = object :TypeToken<List<WeatherVO.Result.Astro>>(){}.type
-private val lifeDescType = object :TypeToken<List<WeatherVO.Result.LifeDescription>>(){}.type
-private val lifeContentType = object :TypeToken<List<WeatherVO.Result.Content>>(){}.type
-private val dataType = object :TypeToken<List<WeatherVO.Result.Data>>(){}.type
-private val windType = object :TypeToken<List<WeatherVO.Result.Wind>>(){}.type
-private val aqiType = object :TypeToken<List<WeatherVO.Result.HourAQI>>(){}.type
-private val dailyAqi = object :TypeToken<List<WeatherVO.Result.DailyAQI>>(){}.type
-private val dailyPM25 = object :TypeToken<List<WeatherVO.Result.DailyPM25>>(){}.type
+import com.hua.network.utils.globalJson
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 /**
  * 对数据库列表进行转换的转换类
  */
@@ -26,105 +13,105 @@ class TypeConverter {
 
     @TypeConverter
     fun temperatureToString(list:List<WeatherVO.Result.Temperature>):String{
-        return gson.toJson(list)
+        return globalJson.encodeToString(list)
     }
 
     @TypeConverter
     fun stringToTemperature(json:String):List<WeatherVO.Result.Temperature>{
-        return gson.fromJson(json,temperatureType)
+        return globalJson.decodeFromString(json)
     }
 
     @TypeConverter
     fun skyIconToString(list:List<WeatherVO.Result.Skycon>):String{
-        return gson.toJson(list)
+        return globalJson.encodeToString(list)
     }
 
     @TypeConverter
-    fun stringToSkyIcon(skyIcon:String):List<WeatherVO.Result.Skycon>{
-        return gson.fromJson(skyIcon,skyIconType)
+    fun stringToSkyIcon(json: String):List<WeatherVO.Result.Skycon>{
+        return globalJson.decodeFromString(json)
     }
 
     @TypeConverter
     fun lifeIndexToString(list:List<String>):String{
-        return gson.toJson(list)
+        return globalJson.encodeToString(list)
     }
     @TypeConverter
-    fun stringToLifeIndex(skyIcon:String):List<String>{
-        return gson.fromJson(skyIcon,lifeIndexType)
+    fun stringToLifeIndex(json: String):List<String>{
+        return globalJson.decodeFromString(json)
     }
 
     @TypeConverter
     fun astroToString(list:List<WeatherVO.Result.Astro>):String{
-        return gson.toJson(list)
+        return globalJson.encodeToString(list)
     }
     @TypeConverter
-    fun stringToAstro(skyIcon:String):List<WeatherVO.Result.Astro>{
-        return gson.fromJson(skyIcon, astroType)
+    fun stringToAstro(json: String):List<WeatherVO.Result.Astro>{
+        return globalJson.decodeFromString(json)
     }
 
     @TypeConverter
     fun lifeDescriptionToString(list:List<WeatherVO.Result.LifeDescription>):String{
-        return gson.toJson(list)
+        return globalJson.encodeToString(list)
     }
     @TypeConverter
-    fun stringToLifeDescription(skyIcon:String):List<WeatherVO.Result.LifeDescription>{
-        return gson.fromJson(skyIcon,lifeDescType)
+    fun stringToLifeDescription(json: String):List<WeatherVO.Result.LifeDescription>{
+        return globalJson.decodeFromString(json)
     }
 
     @TypeConverter
     fun contentToString(list:List<WeatherVO.Result.Content>):String{
-        return gson.toJson(list)
+        return globalJson.encodeToString(list)
     }
     @TypeConverter
-    fun stringToLifeContent(skyIcon:String):List<WeatherVO.Result.Content>{
-        return gson.fromJson(skyIcon, lifeContentType)
+    fun stringToLifeContent(json: String):List<WeatherVO.Result.Content>{
+        return globalJson.decodeFromString(json)
     }
 
     @TypeConverter
     fun dataToString(list:List<WeatherVO.Result.Data>):String{
-        return gson.toJson(list)
+        return globalJson.encodeToString(list)
     }
 
     @TypeConverter
-    fun stringToData(skyIcon:String):List<WeatherVO.Result.Data>{
-        return gson.fromJson(skyIcon, dataType)
+    fun stringToData(json: String):List<WeatherVO.Result.Data>{
+        return globalJson.decodeFromString(json)
     }
 
     @TypeConverter
     fun windToString(list:List<WeatherVO.Result.Wind>):String{
-        return gson.toJson(list)
+        return globalJson.encodeToString(list)
     }
 
     @TypeConverter
-    fun stringToWind(skyIcon:String):List<WeatherVO.Result.Wind>{
-        return gson.fromJson(skyIcon, windType)
+    fun stringToWind(json: String):List<WeatherVO.Result.Wind>{
+        return globalJson.decodeFromString(json)
     }
 
     @TypeConverter
     fun hourAQIToString(list:List<WeatherVO.Result.HourAQI>):String{
-        return gson.toJson(list)
+        return globalJson.encodeToString(list)
     }
     @TypeConverter
-    fun stringToHourAQI(skyIcon:String):List<WeatherVO.Result.HourAQI>{
-        return gson.fromJson(skyIcon, aqiType)
+    fun stringToHourAQI(json: String):List<WeatherVO.Result.HourAQI>{
+        return globalJson.decodeFromString(json)
     }
 
     @TypeConverter
     fun dailyAQIToString(list:List<WeatherVO.Result.DailyAQI>):String{
-        return gson.toJson(list)
+        return globalJson.encodeToString(list)
     }
     @TypeConverter
-    fun stringToDailyAQI(skyIcon:String):List<WeatherVO.Result.DailyAQI>{
-        return gson.fromJson(skyIcon, dailyAqi)
+    fun stringToDailyAQI(json: String):List<WeatherVO.Result.DailyAQI>{
+        return globalJson.decodeFromString(json)
     }
 
     @TypeConverter
     fun dailyPM25ToString(list:List<WeatherVO.Result.DailyPM25>):String{
-        return gson.toJson(list)
+        return globalJson.encodeToString(list)
     }
     @TypeConverter
-    fun stringToDailyPM25(skyIcon:String):List<WeatherVO.Result.DailyPM25>{
-        return gson.fromJson(skyIcon, dailyPM25)
+    fun stringToDailyPM25(json: String):List<WeatherVO.Result.DailyPM25>{
+        return globalJson.decodeFromString(json)
     }
 
 }
