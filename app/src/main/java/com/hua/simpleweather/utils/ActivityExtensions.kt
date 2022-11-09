@@ -1,3 +1,4 @@
+@file:Suppress("unused")
 package com.hua.simpleweather.utils
 
 /**
@@ -59,9 +60,7 @@ fun Activity.setLightStatusBar(isLightBar: Boolean) {
     }
 }
 
-fun Context.isDarkMode(): Boolean {
-    return resources.configuration.uiMode == 0x21
-}
+val Context.isDarkMode get() = resources.configuration.uiMode == 0x21
 
 val WindowManager.windowSize: DisplayMetrics
     get() {

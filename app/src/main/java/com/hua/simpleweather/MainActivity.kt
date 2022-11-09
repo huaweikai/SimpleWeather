@@ -1,37 +1,25 @@
 package com.hua.simpleweather
 
 import android.Manifest
-import android.app.Application
 import android.content.*
-import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.CancellationSignal
-import android.os.Looper
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.hua.network.Contacts.FIRST_ACTION
 import com.hua.network.Contacts.FIRST_ACTION_IS_FIRST
 import com.hua.simpleweather.databinding.ActivityMainBinding
-import com.hua.network.api.WeatherService
-import com.hua.network.onSuccess
-import com.hua.simpleweather.db.dao.WeatherDao
 import com.hua.simpleweather.ui.viewmodels.MainViewModel
 import com.hua.simpleweather.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -83,11 +71,7 @@ class MainActivity : AppCompatActivity() {
         if (!isInMultiWindow) {
             fullScreen()
         }
-        if (resources.configuration.isNightModeActive) {
-            setLightStatusBar(false)
-        } else {
-            setLightStatusBar(true)
-        }
+        setLightStatusBar(isDarkMode)
     }
     //初始化app操作
     private fun initApp() {
@@ -131,10 +115,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun permissionCancel() {
-        lifecycleScope.launch{
+        lifecycleScope.launch {
             //此时要判断当前城市数量，如果不为0，也就是无论是否定位失败，现在已经有天气数据，将不再跳转到城市管理界面
-            if(viewModel.currentCityCount() <= 0){
-                navController.navigate(R.id.action_toCity_popHome)
+            if(viewModel.currentCityCount() <= 0) {
+                setStartDestination(R.id.cityFragment)
             }
         }
     }
@@ -163,5 +147,9 @@ class MainActivity : AppCompatActivity() {
                 ""
             }
         }
+    }
+
+    private fun setStartDestination(id: Int, args: Bundle ?= null) {
+        navController.setStartDestination(R.navigation.navi, id, args)
     }
 }

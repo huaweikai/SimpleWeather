@@ -1,17 +1,17 @@
 package com.hua.simpleweather.ui.fragments
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hua.model.weather.WeatherVO
+import com.hua.simpleweather.R
 import com.hua.simpleweather.databinding.FragementWarnBinding
 import com.hua.simpleweather.ui.adapter.AlertAdapter
-import com.hua.simpleweather.utils.isDarkMode
 
 
 class WarnFragment:BottomSheetDialogFragment() {
@@ -22,11 +22,9 @@ class WarnFragment:BottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _bind = FragementWarnBinding.inflate(layoutInflater)
-        return bind.root.apply {
-            setBackgroundColor( if (context?.isDarkMode() == true) Color.BLACK else Color.WHITE)
-        }
+        return bind.root
     }
     private var alert:WeatherVO.Result.Alert ?= null
     private val adapter = AlertAdapter()
@@ -35,6 +33,10 @@ class WarnFragment:BottomSheetDialogFragment() {
         this.alert = alert
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.AppBottomSheet)
+    }
 
     override fun onStart() {
         super.onStart()
@@ -50,6 +52,7 @@ class WarnFragment:BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (alert == null) dismiss()
         adapter.submitList(alert?.content)
         bind.warnRv.adapter = adapter
         bind.materialToolbar.setNavigationOnClickListener {

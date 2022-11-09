@@ -11,7 +11,6 @@ import androidx.annotation.ColorInt
 import com.hua.simpleweather.utils.dp
 import com.hua.simpleweather.utils.isDarkMode
 import com.hua.simpleweather.utils.sp
-import kotlin.math.max
 import kotlin.math.min
 
 /**
@@ -32,7 +31,7 @@ class CircleProgressView @JvmOverloads constructor(
         color = Color.BLUE
         style = Paint.Style.STROKE
     }
-    //外援的画笔
+    //外圆的画笔
     private val outPaint = Paint().apply {
         strokeCap = Paint.Cap.ROUND
         strokeWidth = circleWidth
@@ -46,7 +45,7 @@ class CircleProgressView @JvmOverloads constructor(
     private val textPaint = Paint().apply {
         textSize = 16.sp
         //对字体颜色进行设置
-        color = if(context.isDarkMode()) Color.WHITE else Color.BLACK
+        color = if(context.isDarkMode) Color.WHITE else Color.BLACK
     }
     private var text = "1"
 

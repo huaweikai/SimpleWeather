@@ -7,25 +7,19 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.activity.result.ActivityResultCallback
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.FileProvider
 import androidx.core.graphics.ColorUtils
-import androidx.core.graphics.scaleMatrix
 import androidx.core.view.drawToBitmap
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import coil.load
 import coil.transform.RoundedCornersTransformation
@@ -40,7 +34,6 @@ import com.hua.simpleweather.ui.adapter.ShareAppAdapter
 import com.hua.simpleweather.utils.*
 import kotlinx.serialization.decodeFromString
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.*
 import kotlin.math.roundToInt
@@ -57,7 +50,7 @@ class ShareFragment : BaseFragment<FragmentShareBinding>() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         initViewBind(FragmentShareBinding.inflate(inflater))
         return bind.root
     }
@@ -83,7 +76,7 @@ class ShareFragment : BaseFragment<FragmentShareBinding>() {
             weather.lat.toDouble()
         )
         bind.apply {
-            shareBg.load(getSkyBg(requireContext().isDarkMode(), weather.result.realtime.skycon)) {
+            shareBg.load(getSkyBg(requireContext().isDarkMode, weather.result.realtime.skycon)) {
                 this.transformations(RoundedCornersTransformation(8.valueToPx(requireContext())))
             }
             shareClose.setOnClickListener {
@@ -177,13 +170,13 @@ class ShareFragment : BaseFragment<FragmentShareBinding>() {
         val appInfo = arrayListOf<AppInfoVo>()
         val intent = Intent(Intent.ACTION_SEND).apply {
             addCategory(Intent.CATEGORY_DEFAULT)
-            setType("image/*")
+            type = "image/*"
         }
-        val resloveInfos = packageManager.queryIntentActivities(
+        val sharesInfos = packageManager.queryIntentActivities(
             intent,
             PackageManager.COMPONENT_ENABLED_STATE_DEFAULT
         )
-        resloveInfos.forEach {
+        sharesInfos.forEach {
             appInfo.add(
                 AppInfoVo(
                     icon = it.loadIcon(packageManager),

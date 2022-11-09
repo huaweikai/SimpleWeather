@@ -3,11 +3,8 @@ package com.hua.simpleweather.ui.adapter
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupWindow
 import androidx.annotation.AttrRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.ColorUtils
@@ -19,11 +16,9 @@ import com.hua.resource.getSkyBg
 import com.hua.simpleweather.MainActivity
 import com.hua.simpleweather.R
 import com.hua.simpleweather.databinding.*
-import com.hua.simpleweather.ui.MorePopWindow
 import com.hua.simpleweather.ui.adapter.holder.*
 import com.hua.simpleweather.ui.fragments.WarnFragment
 import com.hua.simpleweather.ui.showMorePopWindow
-import com.hua.simpleweather.utils.dp
 import com.hua.simpleweather.utils.isDarkMode
 
 
@@ -46,7 +41,7 @@ class WeatherModuleAdapter(
         return typeList[position].type
     }
 
-    private val isDarkMode = activity.applicationContext.isDarkMode()
+    private val isDarkMode = activity.applicationContext.isDarkMode
 
     init {
         //当预警不为空就把预警卡片添加进去
@@ -60,14 +55,14 @@ class WeatherModuleAdapter(
         }
     }
 
-    override fun onViewAttachedToWindow(holder: AbstractMainHolder) {
-        super.onViewAttachedToWindow(holder)
+//    override fun onViewAttachedToWindow(holder: AbstractMainHolder) {
+//        super.onViewAttachedToWindow(holder)
 //        val a: Animator = ObjectAnimator.ofFloat(holder.itemView, "alpha", 0f, 1f)
 //        a.duration = 300
 //        a.startDelay = 100
 //        a.interpolator = FastOutSlowInInterpolator()
 //        a.start()
-    }
+//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AbstractMainHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

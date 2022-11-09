@@ -5,33 +5,25 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.Message
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.ColorUtils
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.palette.graphics.Palette
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.hua.network.Contacts.CITY_TO_HOME
-import com.hua.resource.getDayBg
 import com.hua.resource.getSkyBg
 import com.hua.simpleweather.ActionEvent
-import com.hua.simpleweather.R
 import com.hua.simpleweather.base.BaseFragment
 import com.hua.simpleweather.databinding.FragmentHomeBinding
 import com.hua.simpleweather.ui.adapter.WeatherViewPagerAdapter
 import com.hua.simpleweather.ui.viewmodels.MainViewModel
 import com.hua.simpleweather.utils.*
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.lang.ref.WeakReference
 
 
 @AndroidEntryPoint
@@ -48,11 +40,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         return bind.root
     }
 
-    private val homeHandler = HomeHandler(this)
+    private val homeHandler = HomeHandler()
 
-    class HomeHandler(fragment: Fragment) : Handler(Looper.getMainLooper()) {
-        private var weakFragment: WeakReference<Fragment>? = null
-    }
+    class HomeHandler: Handler(Looper.getMainLooper())
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -90,7 +80,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 homeHandler.removeCallbacksAndMessages(null)
                 homeHandler.postDelayed({
                     setSystemStatus(
-                        getSkyBg(requireActivity().isDarkMode(), it)
+                        getSkyBg(requireActivity().isDarkMode, it)
                     )
                 },500L)
             }, swipRefresh = {
@@ -115,6 +105,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 }
             }
         }
+        bind.homeViewpager.offscreenPageLimit = 2
     }
 
     private fun setSystemStatus(res: Int) {

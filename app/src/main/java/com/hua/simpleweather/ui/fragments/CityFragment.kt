@@ -80,7 +80,7 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
                 viewHolder: RecyclerView.ViewHolder
             ): Int {
                 //当需要被滑动的id == 0也就是为定位天气时，不允许被滑动
-                if (viewModel.cityListLiveData.value?.get(viewHolder.adapterPosition)?.id != 0) {
+                if (viewModel.cityListLiveData.value?.get(viewHolder.bindingAdapterPosition)?.id != 0) {
                     val dragFlag = ItemTouchHelper.UP or ItemTouchHelper.DOWN
                     return makeMovementFlags(dragFlag, 0)
                 }
@@ -93,8 +93,8 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
                 target: RecyclerView.ViewHolder
             ): Boolean {
                 //当移动到 定位天气时，不允许替换位置，保持定位天气永远第一位
-                if (viewModel.cityListLiveData.value?.get(target.adapterPosition)?.id != 0){
-                    viewModel.updateCityIndex(viewHolder.adapterPosition, target.adapterPosition)
+                if (viewModel.cityListLiveData.value?.get(target.bindingAdapterPosition)?.id != 0){
+                    viewModel.updateCityIndex(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
                 }
                 return true
             }
@@ -116,8 +116,18 @@ class CityFragment : BaseFragment<FragmentCityBinding>() {
 
         bind.cityDesc.apply {
             setNavigationOnClickListener {
-                findNavController().navigateUp()
+                backAction()
             }
+        }
+    }
+
+
+    private fun backAction() {
+        val graph = findNavController().graph
+        if (graph.startDestinationId == R.id.homeFragment) {
+            findNavController().navigateUp()
+        } else {
+            activity?.finish()
         }
     }
 

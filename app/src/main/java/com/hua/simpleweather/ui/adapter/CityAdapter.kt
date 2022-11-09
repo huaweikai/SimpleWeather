@@ -7,13 +7,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import coil.size.Scale
 import com.hua.model.weather.WeatherVO
 import com.hua.resource.getSkyBg
 import com.hua.resource.getSkyName
 import com.hua.simpleweather.R
 import com.hua.simpleweather.databinding.ItemCityBinding
-import com.hua.simpleweather.utils.dp
 import com.hua.simpleweather.utils.getString
 import com.hua.simpleweather.utils.isDarkMode
 import kotlin.math.roundToInt
@@ -45,7 +43,7 @@ class CityAdapter(
     class VHolder(val bind:ItemCityBinding):RecyclerView.ViewHolder(bind.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VHolder {
-        val width = parent.context.resources.displayMetrics.widthPixels
+//        val width = parent.context.resources.displayMetrics.widthPixels
         val holder = VHolder(
             ItemCityBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -55,10 +53,10 @@ class CityAdapter(
         ).apply {
             bind.root.isClickable = !isDeleteTime
             bind.cityDelete.setOnClickListener {
-                onDeleteClick(getItem(adapterPosition))
+                onDeleteClick(getItem(bindingAdapterPosition))
             }
             bind.root.setOnClickListener {
-                onclick(adapterPosition)
+                onclick(bindingAdapterPosition)
             }
 //            bind.root.setOnLongClickListener {
 //                isDeleteTime = true
@@ -73,7 +71,7 @@ class CityAdapter(
     override fun onBindViewHolder(holder: VHolder, position: Int) {
         val data = getItem(position)
         holder.bind.apply {
-            cityBg.load(getSkyBg(this.root.context.isDarkMode(),data.result.realtime.skycon))
+            cityBg.load(getSkyBg(this.root.context.isDarkMode,data.result.realtime.skycon))
             cityName.text = data.cityName
             val temp = "${data.result.realtime.temperature.roundToInt()}°"
             cityTemp.text = temp

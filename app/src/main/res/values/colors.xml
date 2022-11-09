@@ -10,4 +10,5 @@
     <color name="transparent">#00000000</color>
     <color name="search_bg_color">#E8E8E8</color>
     <color name="on_back_ground">#FF000000</color>
+    <color name="warn_back_ground">#FFFFFFFF</color>
 </resources>

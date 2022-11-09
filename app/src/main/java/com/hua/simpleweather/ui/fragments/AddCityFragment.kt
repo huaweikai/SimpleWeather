@@ -20,6 +20,7 @@ import com.hua.simpleweather.db.dao.bean.LocalCity
 import com.hua.simpleweather.ui.adapter.PagingCityAdapter
 import com.hua.simpleweather.ui.adapter.moduleItemDecoration
 import com.hua.simpleweather.ui.viewmodels.AddCityViewModel
+import com.hua.simpleweather.utils.setStartDestination
 import com.hua.simpleweather.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -86,15 +87,7 @@ class AddCityFragment : BaseFragment<FragmentAddCityBinding>() {
                     is Error -> it.message.toast(requireContext())
                     is Success -> {
                         "添加成功".toast(requireContext())
-                        //成功后，将跳转到天气界面
-                        findNavController().navigate(
-                            R.id.action_addCityFragment_to_homeFragment,
-                            Bundle().apply
-                            {
-                                putInt(CITY_TO_HOME, -1)
-                            }
-                        )
-
+                        actionToHomeFragment()
                     }
                     else -> {}
                 }
@@ -114,6 +107,22 @@ class AddCityFragment : BaseFragment<FragmentAddCityBinding>() {
                 "取消"
             ) { _, _ -> }
             create().show()
+        }
+    }
+
+    private fun actionToHomeFragment() {
+        val bundle = Bundle()
+        bundle.putInt(CITY_TO_HOME, -1)
+        //成功后，将跳转到天气界面
+        val navController = findNavController()
+        if (navController.graph.startDestinationId == R.id.homeFragment) {
+            navController.navigate(R.id.action_addCityFragment_to_homeFragment, bundle)
+        } else {
+            navController.setStartDestination(
+                R.navigation.navi,
+                R.id.homeFragment,
+                bundle
+            )
         }
     }
 }
