@@ -2,23 +2,23 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        style="@style/Main_Card"
-        android:layout_height="wrap_content">
+        style="@style/Main_Card">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
         <TextView
-                android:text="TextView"
-                android:layout_width="wrap_content"
+                tools:text="良"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/item_air_desc"
+                android:gravity="center"
                 app:layout_constraintBottom_toBottomOf="@+id/item_air_card_rv"
-                app:layout_constraintTop_toBottomOf="@+id/item_air_card_cricle_progress"
-                app:layout_constraintStart_toStartOf="@+id/item_air_card_cricle_progress"
-                app:layout_constraintEnd_toEndOf="@+id/item_air_card_cricle_progress"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toBottomOf="@+id/item_air_card_circle_progress"
+                app:layout_constraintStart_toStartOf="@+id/item_air_card_circle_progress"
+                app:layout_constraintEnd_toEndOf="@+id/item_air_card_circle_progress"
+                app:layout_constraintVertical_bias="0.1" />
 
         <TextView
                 style="@style/Item_card_Title"
@@ -29,16 +29,14 @@
 
         <com.hua.simpleweather.ui.view.CircleProgressView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/item_air_card_cricle_progress"
+                android:layout_height="0dp"
+                android:layout_margin="16dp"
+                app:layout_constraintDimensionRatio="1"
+                android:id="@+id/item_air_card_circle_progress"
                 app:layout_constraintTop_toTopOf="@+id/item_air_card_rv"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="16dp"
-                app:layout_constraintBottom_toBottomOf="@+id/item_air_card_rv"
-                app:layout_constraintEnd_toStartOf="@+id/item_air_card_rv"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp" />
+                app:layout_constraintBottom_toBottomOf="@id/item_air_card_rv"
+                app:layout_constraintEnd_toStartOf="@+id/guideline2" />
 
         <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="0dp"

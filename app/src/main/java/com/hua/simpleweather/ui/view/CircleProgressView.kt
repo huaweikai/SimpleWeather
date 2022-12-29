@@ -50,11 +50,10 @@ class CircleProgressView @JvmOverloads constructor(
     private var text = "1"
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val widthMode = MeasureSpec.getMode(widthMeasureSpec)
         val heightMode = MeasureSpec.getMode(heightMeasureSpec)
-        val widthSize = if(widthMode == MeasureSpec.EXACTLY) MeasureSpec.getSize(widthMeasureSpec) else 100.dp
-        val heightSize = if(heightMode == MeasureSpec.EXACTLY) MeasureSpec.getSize(heightMeasureSpec) else 100.dp
+        val widthSize = if(widthMode != MeasureSpec.UNSPECIFIED) MeasureSpec.getSize(widthMeasureSpec) else 100.dp
+        val heightSize = if(heightMode != MeasureSpec.UNSPECIFIED) MeasureSpec.getSize(heightMeasureSpec) else 100.dp
         //选取最小值，保证一定是所在区域最大的正方形
         val size = min(widthSize,heightSize)
         setMeasuredDimension(size,size)

@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hua.material.materialcolor.ColorContainerData
 import com.hua.model.weather.WeatherVO
 import com.hua.resource.AQIDetailViewType
-import com.hua.resource.getAQIDesc
 import com.hua.resource.getAQIValue
 import com.hua.simpleweather.R
 import com.hua.simpleweather.base.BaseViewHolder
@@ -22,9 +21,9 @@ class AirHolder(
         bind.apply {
             itemAirCardTitle.setTextColor(colorData.primaryColor)
 
-            itemAirCardCricleProgress.setColor(colorData.primaryColor,colorData.containerColor)
-            itemAirCardCricleProgress.setMax(500)
-            itemAirCardCricleProgress.setProgress(data.result.realtime.airQuality.aqi.chn)
+            itemAirCardCircleProgress.setColor(colorData.primaryColor,colorData.containerColor)
+            itemAirCardCircleProgress.setMax(500)
+            itemAirCardCircleProgress.setProgress(data.result.realtime.airQuality.aqi.chn)
 
             itemAirDesc.text = data.result.realtime.airQuality.description.chn
 
