@@ -13,8 +13,8 @@ android {
         applicationId "com.hua.simpleweather"
         minSdk 21
         targetSdk 33
-        versionCode 5
-        versionName "1.2.1"
+        versionCode 6
+        versionName "1.2.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -52,6 +52,7 @@ dependencies {
 
     implementation 'com.google.dagger:hilt-android:2.43.2'
     kapt 'com.google.dagger:hilt-compiler:2.43.2'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
     implementation "androidx.room:room-runtime:2.5.0-alpha03"
     kapt("androidx.room:room-compiler:2.5.0-alpha03")
